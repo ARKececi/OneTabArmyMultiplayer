@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/PhotonSystem/Scenes/Start.unity
+    path: Assets/Scripts/PhotonSystem/Scenes/Start.unity
     guid: 7957421407a948149991bae39399269c
   - enabled: 1
-    path: Assets/PhotonSystem/Scenes/MainScene.unity
+    path: Assets/Scripts/PhotonSystem/Scenes/MainScene.unity
     guid: 08b65444577e39142b5978fc1d9cf3f3
   - enabled: 1
-    path: Assets/PhotonSystem/Scenes/GameScene.unity
+    path: Assets/Scripts/PhotonSystem/Scenes/GameScene.unity
     guid: 7e36b25aea008c946b00a2bc7b552729
   m_configObjects: {}

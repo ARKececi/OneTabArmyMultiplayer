@@ -13,12 +13,7 @@ MonoBehaviour:
   m_Name: SO_PositonData
   m_EditorClassIdentifier: 
   PlayerSpawn:
-    _items:
-    - Key:
-        PlayerPosition: {x: 0, y: 0, z: -12}
-        PlayerRotation: {x: 0, y: 0, z: 0}
-      Value: 0
-    - Key:
-        PlayerPosition: {x: 0, y: 0, z: 12}
-        PlayerRotation: {x: 0, y: 180, z: 0}
-      Value: 0
+  - PlayerPosition: {x: 0, y: 0, z: -12}
+    PlayerRotation: {x: 0, y: 0, z: 0}
+  - PlayerPosition: {x: 0, y: 0, z: 12}
+    PlayerRotation: {x: 0, y: 180, z: 0}

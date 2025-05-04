@@ -1,4 +1,6 @@
-﻿using DesignPattern;
+﻿using System;
+using BotSystem;
+using DesignPattern;
 using Fusion;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,7 +9,6 @@ namespace SpawnSystem
 {
     public class SpawnSignals : MonoSingleton<SpawnSignals>
     {
-        public UnityAction<NetworkRunner> OnRunnerAssing;
-        public UnityAction<Vector3> OnSpawn;
+        public Func<SignalsData,NetworkObject> OnSpawn;
     }
 }
