@@ -69,52 +69,6 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
---- !u!1 &819828002774376937
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3149206144290309998}
-  - component: {fileID: 1492328399037203998}
-  m_Layer: 0
-  m_Name: TowerController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3149206144290309998
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819828002774376937}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 991000437183950185}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1492328399037203998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819828002774376937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e66055536ee40db95850a87fcaa360f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _levelList:
-    _items: []
 --- !u!1 &5229221373213486124
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,7 +79,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3530113810672015506}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: CamSpawnPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,7 +135,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3530113810672015506}
-  - {fileID: 3149206144290309998}
   - {fileID: 3094136841347500285}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -207,7 +160,6 @@ MonoBehaviour:
   - {fileID: 5350082997416213553}
   - {fileID: 6191543237102105519}
   - {fileID: 6957050749574753216}
-  - {fileID: 1492328399037203998}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &7902439148777947534
 MonoBehaviour:
@@ -269,4 +221,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe426f72ceea4a59a4ff8e7f8acca8ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  __npcObject: {fileID: 0}

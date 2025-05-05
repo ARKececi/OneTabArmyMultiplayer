@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using BotSystem.Controller;
-using Fusion;
+﻿using Fusion;
 using InputSystem.Params;
 using PlayerSystem.Controller;
 using PlayerSystem.Data.UnityObject;
 using PlayerSystem.Data.ValueObject;
-using PlayerSystem.States;
 using SpawnSystem;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PlayerSystem
 {
@@ -93,9 +86,10 @@ namespace PlayerSystem
             {
                 Ray ray = Camera.main.ScreenPointToRay(screenPosition);
                 Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
-                if (Physics.Raycast(ray, out RaycastHit hit))
+                if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, LayerMask.GetMask("Plane")))
                 {
-                    return hit.point; // Dünya pozisyonu
+                    // Sadece Plane'e çarptıysa input gönder
+                    return hitInfo.point;
                 }
             }
             return Vector3.zero;

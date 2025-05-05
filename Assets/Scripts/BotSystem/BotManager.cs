@@ -5,6 +5,7 @@ using PlayerSystem;
 using SpawnSystem.Animation;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 namespace BotSystem
 {
@@ -13,10 +14,10 @@ namespace BotSystem
         #region Self Variables
 
         #region Public Variables
-        
-         public List<BotManager> targetEnemyList = new List<BotManager>(); // hedef manager;
 
-         public NetworkObject Player;
+        public List<BotManager> EnemyList = new();// hedef manager;
+        [Networked]public BotManager Enemy { set; get; }
+        [Networked] public NetworkObject Player{ get; set; }
 
         #endregion
 
@@ -43,7 +44,8 @@ namespace BotSystem
 
         public void Update()
         {
-            _agent.destination = Hit;
+            SetTarget();
+           
             RPC_AnimationControl(_agent.velocity.magnitude > 0.7f ? AnimationEnum.Run : AnimationEnum.Idle);
         }
         
@@ -53,15 +55,26 @@ namespace BotSystem
             if (animationenum == animationEnum) return;
             _animationController.RPC_SwichAnimation(animationenum);
             animationEnum = animationenum;
-
         }
         
-        public void OnHitTarget(Vector3 MouseHit)
+        public void OnHit(Vector3 MouseHit)
         {
-            if (targetEnemyList.Count != 0) return;
+            if (EnemyList.Count != 0) return;
             if (IsValidNavMeshPosition(MouseHit, out Vector3 validPosition))
             {
                 Hit = validPosition;
+            }
+        }
+
+        private void SetTarget()
+        {
+            if (EnemyList.Count > 0)
+            {
+                _agent.destination = EnemyList[0].transform.position;
+            }
+            else
+            {
+                _agent.destination = Hit;
             }
         }
         
@@ -76,6 +89,20 @@ namespace BotSystem
 
             validPosition = Vector3.zero;
             return false;
+        }
+
+        public void AddEnemy(BotManager botManager)
+        {
+            EnemyList.Add(botManager);
+        }
+        
+        public void RemoveEnemy(BotManager botManager)
+        {
+            EnemyList.Remove(botManager);
+            if (EnemyList.Count == 0)
+            {
+                Hit = transform.position;
+            }
         }
     }
 }

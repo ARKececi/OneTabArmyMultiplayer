@@ -25,11 +25,6 @@ namespace SpawnSystem
         #region Private Variables
 
         private NPCPrefabData prefabData;
-        [Networked] public NetworkObject _npcObject
-        {
-            get;
-            set;
-        }
 
         #endregion
 
@@ -57,19 +52,12 @@ namespace SpawnSystem
             if (npc != null)
             {
                 spawnNpc.Add(npc);
+                npc.tag = Object.InputAuthority.ToString();
+                BotManager npcManagger = npc.GetComponent<BotManager>();
+                npcManagger.Player = Object;
             }
-
+            
             return npc;
-        }
-        
-        public void SpawnObject(Vector3 position, NetworkPrefabRef eNpcPrefabEnum)
-        {   
-            if (Runner == null)
-            {
-                Debug.LogError("Runner is null, cannot spawn.");
-                return;
-            }
-            _npcObject = Runner.Spawn(eNpcPrefabEnum, position, Quaternion.identity);
         }
         
         public void Reset()

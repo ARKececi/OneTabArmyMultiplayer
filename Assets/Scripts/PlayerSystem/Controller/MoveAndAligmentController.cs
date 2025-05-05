@@ -84,7 +84,6 @@ namespace PlayerSystem.Controller
         {
             // Server'da çalışacak, Runner.Spawn burada çağrılmalı
             var npc = SpawnController.OnSpawn(transform.position, npcPrefabEnum);
-            Debug.Log(npc);
             if (npc == null) return;
             var botManager = npc.GetComponent<BotManager>();
             spawnNpc.Add(npc);
@@ -123,7 +122,7 @@ namespace PlayerSystem.Controller
 
                 // Botun yeni pozisyonu
                 Vector3 newPos = startPos + new Vector3(col * xSpacing, 0, row * zSpacing);
-                bots[i].OnHitTarget(newPos);
+                bots[i].OnHit(newPos);
             }
         }
 
@@ -158,7 +157,7 @@ namespace PlayerSystem.Controller
             Vector3 newPos = basePosition + new Vector3(xOffset, 0, zOffset);
 
             // Botu belirlenen noktaya gönder
-            bot.OnHitTarget(newPos);
+            bot.OnHit(newPos);
         }
         
         public void Reset()

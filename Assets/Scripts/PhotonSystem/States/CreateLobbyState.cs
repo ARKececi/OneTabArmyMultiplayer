@@ -246,7 +246,6 @@ namespace PhotonSystem.States
         public async void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
             await Reset();
-            Debug.Log("burada");
         }
         public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
