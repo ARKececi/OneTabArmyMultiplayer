@@ -40,14 +40,29 @@ namespace SpawnSystem
             prefabData = Resources.Load<SO_NPCPrefabs>("Data/SO_NPCPrefabs").NPCData;
         }
 
-        
-        public NetworkObject RPC_OnSpawn(Vector3 position, NPCPrefabEnum eNpcPrefabEnum)
+        public override void Spawned()
         {
-            RPC_SpawnObject(position, prefabData.NPCPrefabs[eNpcPrefabEnum]);
-            return _npcObject;
+            
+        }
+
+        
+        public NetworkObject OnSpawn(Vector3 position, NPCPrefabEnum eNpcPrefabEnum)
+        {
+            if (Runner == null)
+            {
+                Debug.LogError("Runner is null");
+                return null;
+            }
+            var npc = Runner.Spawn(prefabData.NPCPrefabs[eNpcPrefabEnum], position, Quaternion.identity);
+            if (npc != null)
+            {
+                spawnNpc.Add(npc);
+            }
+
+            return npc;
         }
         
-        public void RPC_SpawnObject(Vector3 position, NetworkPrefabRef eNpcPrefabEnum)
+        public void SpawnObject(Vector3 position, NetworkPrefabRef eNpcPrefabEnum)
         {   
             if (Runner == null)
             {

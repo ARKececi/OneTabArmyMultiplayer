@@ -223,7 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camTransform: {fileID: 3530113810672015506}
   _cameraPrefab: {fileID: 3671227056354395510, guid: 91fe1c27964637b42a0cd39b34a289c9, type: 3}
-  Timer: 1
+  Timer: 10
 --- !u!114 &5350082997416213553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _aligment: {fileID: 652968560067283170}
-  Timer: 1
+  Timer: 3
   moveNpcList: []
   spawnNpcList: []
 --- !u!114 &6957050749574753216
@@ -269,6 +269,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe426f72ceea4a59a4ff8e7f8acca8ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _alignment: {fileID: 0}
-  prefabData: {fileID: 11400000, guid: ca022692966b83244aa37d4c0e2fedb0, type: 2}
   __npcObject: {fileID: 0}

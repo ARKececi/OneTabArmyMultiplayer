@@ -9,7 +9,7 @@ namespace BotSystem.Animation
         #region Self Variables
 
         #region Serialized Variables
-        
+        [Networked]
         private AnimationEnum CurrentAnim { get; set; }
         
         [SerializeField] private Animator _animator;

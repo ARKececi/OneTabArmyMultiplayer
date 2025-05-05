@@ -44,7 +44,6 @@ namespace PhotonSystem
         public void PlayerJoined(PlayerRef player)
         {
             if (!Runner.IsServer) return;
-            Debug.Log("girdi");
             
                 if (PlayerData.Count <= transformData.Count)
                 {

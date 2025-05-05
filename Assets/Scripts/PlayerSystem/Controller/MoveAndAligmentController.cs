@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using BotSystem;
 using Fusion;
-using InputSystem.Params;
 using SpawnSystem;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PlayerSystem.Controller
 {
@@ -35,8 +33,6 @@ namespace PlayerSystem.Controller
         
         private void TimerClass()
         {
-            if (!HasInputAuthority) return;
-            
             _timer -= Runner.DeltaTime;
             if (_timer <= 0)
             {
@@ -45,15 +41,20 @@ namespace PlayerSystem.Controller
             }
         }
 
+        public override void Spawned()
+        {
+            
+        }
+
         public void Awake()
         {
             SpawnController = GetComponent<SpawnController>(); // veya doğrudan referansla bağla
             _timer = Timer;
         }
         
-        public override void FixedUpdateNetwork()
+        public override void FixedUpdateNetwork()        
         {
-            if (!Object.HasInputAuthority) return; // sadece server timer kontrolü yapar
+            if (!HasStateAuthority) return; // sadece server timer kontrolü yapar
             TimerClass();
         }  
         
@@ -78,12 +79,11 @@ namespace PlayerSystem.Controller
             AlignHitdBots(move, moveNpcList, 7, 1f, 1f);
         }
         
-        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        
         public void RPC_SpawnObject(NPCPrefabEnum npcPrefabEnum)
         {
-            if (!Runner.IsServer) return;
             // Server'da çalışacak, Runner.Spawn burada çağrılmalı
-            var npc = SpawnController.RPC_OnSpawn(transform.position, npcPrefabEnum);
+            var npc = SpawnController.OnSpawn(transform.position, npcPrefabEnum);
             Debug.Log(npc);
             if (npc == null) return;
             var botManager = npc.GetComponent<BotManager>();

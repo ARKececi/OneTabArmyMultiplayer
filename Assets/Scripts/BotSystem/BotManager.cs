@@ -30,6 +30,7 @@ namespace BotSystem
         #region Private Variables
 
         private Vector3 Hit { get; set; }
+        private AnimationEnum animationEnum;
 
         #endregion
 
@@ -46,10 +47,13 @@ namespace BotSystem
             RPC_AnimationControl(_agent.velocity.magnitude > 0.7f ? AnimationEnum.Run : AnimationEnum.Idle);
         }
         
-        public void RPC_AnimationControl(AnimationEnum animationEnum)
+        public void RPC_AnimationControl(AnimationEnum animationenum)
         {
             if (!HasStateAuthority) return;
-            _animationController.RPC_SwichAnimation(animationEnum);
+            if (animationenum == animationEnum) return;
+            _animationController.RPC_SwichAnimation(animationenum);
+            animationEnum = animationenum;
+
         }
         
         public void OnHitTarget(Vector3 MouseHit)
