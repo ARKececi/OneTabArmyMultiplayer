@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BotSystem.Animation;
 using Fusion;
 using PlayerSystem;
@@ -45,8 +46,6 @@ namespace BotSystem
         public void Update()
         {
             SetTarget();
-           
-            RPC_AnimationControl(_agent.velocity.magnitude > 0.7f ? AnimationEnum.Run : AnimationEnum.Idle);
         }
         
         public void RPC_AnimationControl(AnimationEnum animationenum)
@@ -70,11 +69,24 @@ namespace BotSystem
         {
             if (EnemyList.Count > 0)
             {
-                _agent.destination = EnemyList[0].transform.position;
+                if (EnemyList[0] != null)_agent.destination = EnemyList[0].transform.position;
+                else NullClear();
+                if ( _agent.velocity.magnitude > 0.7f )
+                {
+                    RPC_AnimationControl(AnimationEnum.Run);
+                }
+                else
+                {
+                    RPC_AnimationControl(AnimationEnum.Fight);
+                    _agent.ResetPath();
+                    _agent.Warp(transform.position);
+                }
+                
             }
             else
             {
                 _agent.destination = Hit;
+                RPC_AnimationControl(_agent.velocity.magnitude > 0.7f ? AnimationEnum.Run : AnimationEnum.Idle);
             }
         }
         
@@ -94,6 +106,7 @@ namespace BotSystem
         public void AddEnemy(BotManager botManager)
         {
             EnemyList.Add(botManager);
+            _agent.stoppingDistance = 1f;
         }
         
         public void RemoveEnemy(BotManager botManager)
@@ -102,7 +115,13 @@ namespace BotSystem
             if (EnemyList.Count == 0)
             {
                 Hit = transform.position;
+                _agent.stoppingDistance = 0;
             }
+        }
+
+        private void NullClear()
+        {
+            EnemyList.Remove(EnemyList[0]);
         }
     }
 }
