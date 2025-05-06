@@ -1,10 +1,12 @@
-﻿using Fusion;
+﻿using System.Collections.Generic;
+using Fusion;
 using InputSystem.Params;
 using PlayerSystem.Controller;
 using PlayerSystem.Data.UnityObject;
 using PlayerSystem.Data.ValueObject;
 using SpawnSystem;
 using UnityEngine;
+using Task = System.Threading.Tasks.Task;
 
 namespace PlayerSystem
 {
@@ -12,11 +14,18 @@ namespace PlayerSystem
     {
         #region Self Variables
 
+        #region Public Variables
+
+        [Networked] public Color PlayerColor { get; set; }
+        
+        #endregion
+
         #region Serialized Variables
 
         [SerializeField] private Transform _camTransform;
         [SerializeField] private GameObject _cameraPrefab;
         [SerializeField] private float Timer;
+        [SerializeField] private Material _material;
 
         #endregion
 
@@ -26,28 +35,19 @@ namespace PlayerSystem
         
         private SerializableDictionary<int, TowerLwlData> _levelList;
         private int lwl;
+        private List<MeshRenderer> _meshRenderers;
 
         #endregion
 
         #region Private Variables
 
-        private NetworkObject tower;
+        [Networked] private NetworkObject tower { get; set; }
         private MoveAndAligmentController moveAndAligmentController;
         private float _timer;
 
         #endregion
 
         #endregion
-        
-        private void TimerClass()
-        {
-            _timer -= Time.fixedDeltaTime;
-            if (_timer <= 0)
-            {
-                NpcSpawn(NPCPrefabEnum.Soldier);
-                _timer = Timer;
-            }
-        }
 
         public override void Spawned()
         {
@@ -56,6 +56,7 @@ namespace PlayerSystem
             cameraInstance.transform.localPosition = _camTransform.localPosition;
             cameraInstance.transform.rotation = _camTransform.rotation;
             RPC_TowerObject();
+            RPC_SetColor();
         }
         
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
@@ -66,12 +67,21 @@ namespace PlayerSystem
                 Debug.LogError("Runner is null, cannot spawn.");
                 return;
             }
+            
             tower = Runner.Spawn(
-                _levelList[lwl].Tower, 
-                transform.position,     
-                transform.rotation);
+                _levelList[lwl].Tower,
+                transform.position,
+                transform.rotation,
+                Object.InputAuthority,
+                OnBeforeUpdate);
             if (lwl == 0) return;
             Runner.Despawn(_levelList[lwl].Tower);
+        }
+
+        private void OnBeforeUpdate(NetworkRunner runner, NetworkObject networkObject)
+        {
+            var controller = networkObject.GetComponent<TowerController>();
+            controller.ColorToApply = PlayerColor;
         }
 
         private void Awake()
@@ -106,9 +116,10 @@ namespace PlayerSystem
             }
         }  
         
-        public void NpcSpawn(NPCPrefabEnum npcEnum)
+        [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+        public void RPC_SetColor()
         {
-            moveAndAligmentController.RPC_SpawnObject(NPCPrefabEnum.Soldier);
+            GetComponent<SpawnController>().PlayerColor = PlayerColor;
         }
 
         public void Reset()

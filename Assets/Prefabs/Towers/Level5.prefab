@@ -1007,6 +1007,7 @@ GameObject:
   - component: {fileID: 834293900494868425}
   - component: {fileID: 6251217849606339474}
   - component: {fileID: 5065179614080056913}
+  - component: {fileID: -8636882780066549312}
   m_Layer: 0
   m_Name: Level5
   m_TagString: Untagged
@@ -1061,6 +1062,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 5065179614080056913}
+  - {fileID: -8636882780066549312}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &5065179614080056913
 MonoBehaviour:
@@ -1079,6 +1081,20 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &-8636882780066549312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8002526936520895825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8ea59a807f843a48eb05944ac083014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaterialToApply: {fileID: 0}
+  ColorToApply: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &8509882409598033267
 GameObject:
   m_ObjectHideFlags: 0

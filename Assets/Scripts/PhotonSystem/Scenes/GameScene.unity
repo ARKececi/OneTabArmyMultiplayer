@@ -299,6 +299,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefab:
     RawGuidValue: 5d1dc90e5f5ccc84db540a7ee7a25299
+  _playerColor:
+  - {r: 1, g: 0, b: 0, a: 0}
+  - {r: 0, g: 1, b: 0.020182133, a: 0}
+  - {r: 1, g: 0, b: 0.99501085, a: 0}
+  - {r: 0, g: 0.11642933, b: 1, a: 0}
   _PlayerData:
     _items: []
 --- !u!4 &992954389

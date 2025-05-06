@@ -17,6 +17,12 @@ namespace SpawnSystem
         #region Self Variables
 
         #region Public Variables
+
+        [Networked] public Color PlayerColor { get; set; }
+
+        #endregion
+
+        #region Public Variables
         
         private List<NetworkObject> spawnNpc = new();
 
@@ -48,7 +54,7 @@ namespace SpawnSystem
                 Debug.LogError("Runner is null");
                 return null;
             }
-            var npc = Runner.Spawn(prefabData.NPCPrefabs[eNpcPrefabEnum], position, Quaternion.identity);
+            var npc = Runner.Spawn(prefabData.NPCPrefabs[eNpcPrefabEnum], position, Quaternion.identity,inputAuthority: PlayerRef.None,OnBeforeUpdate);
             if (npc != null)
             {
                 spawnNpc.Add(npc);
@@ -57,7 +63,15 @@ namespace SpawnSystem
                 npcManagger.Player = Object;
             }
             
+            
+            
             return npc;
+        }
+
+        private void OnBeforeUpdate(NetworkRunner runner, NetworkObject networkObject)
+        {
+            var manager = networkObject.GetComponent<BotManager>();
+            manager.PlayerColor = PlayerColor;
         }
         
         public void Reset()

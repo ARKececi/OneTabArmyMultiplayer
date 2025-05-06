@@ -17,8 +17,9 @@ namespace BotSystem
         #region Public Variables
 
         public List<BotManager> EnemyList = new();// hedef manager;
-        [Networked]public BotManager Enemy { set; get; }
+        [Networked] public Color PlayerColor { get; set; }
         [Networked] public NetworkObject Player{ get; set; }
+        [Networked] public bool Fight { get; set; }
 
         #endregion
 
@@ -41,6 +42,7 @@ namespace BotSystem
         public override void Spawned()
         {
             _animationController = GetComponent<AnimationController>();
+            SetColor();
         }
 
         public void Update()
@@ -67,21 +69,38 @@ namespace BotSystem
 
         private void SetTarget()
         {
+            if (!HasStateAuthority) return;
+            
             if (EnemyList.Count > 0)
             {
-                if (EnemyList[0] != null)_agent.destination = EnemyList[0].transform.position;
-                else NullClear();
-                if ( _agent.velocity.magnitude > 0.7f )
-                {
-                    RPC_AnimationControl(AnimationEnum.Run);
+                if (GetClosestTransform(EnemyList,transform.position) != null){
+                    if (!Fight)_agent.destination = GetClosestTransform(EnemyList,transform.position).transform.position;
                 }
                 else
                 {
+                    NullClear();
+                    return;
+                }
+                
+                var distance = Vector3.Distance(Object.transform.position, GetClosestTransform(EnemyList,transform.position).transform.position);
+                if ( _agent.velocity.magnitude > 0.7f || distance > 1f)
+                {
+                    if (_agent.velocity.magnitude > 0.7f)
+                    {
+                        RPC_AnimationControl(AnimationEnum.Run);
+                    }
+                    else
+                    {
+                        RPC_AnimationControl(AnimationEnum.Idle);
+                    }
+                }
+                else
+                {
+                    Fight = true;
                     RPC_AnimationControl(AnimationEnum.Fight);
                     _agent.ResetPath();
                     _agent.Warp(transform.position);
                 }
-                
             }
             else
             {
@@ -111,6 +130,7 @@ namespace BotSystem
         
         public void RemoveEnemy(BotManager botManager)
         {
+            if (EnemyList[0] == botManager) Fight = false;
             EnemyList.Remove(botManager);
             if (EnemyList.Count == 0)
             {
@@ -122,6 +142,37 @@ namespace BotSystem
         private void NullClear()
         {
             EnemyList.Remove(EnemyList[0]);
+        }
+        
+        private BotManager GetClosestTransform(List<BotManager> list, Vector3 reference)
+        {
+            if (list == null || list.Count == 0)
+                return null;
+
+            BotManager closest = null;
+            float minDistanceSqr = Mathf.Infinity;
+
+            foreach (BotManager t in list)
+            {
+                if (t == null) continue;
+                float sqrDist = (t.transform.position - reference).sqrMagnitude;
+                if (sqrDist < minDistanceSqr)
+                {
+                    minDistanceSqr = sqrDist;
+                    closest = t;
+                }
+            }
+
+            return closest;
+        }
+
+        private void SetColor()
+        {
+            SkinnedMeshRenderer[] mesh = GetComponentsInChildren<SkinnedMeshRenderer>();
+            foreach (var VARIABLE in mesh)
+            {
+                VARIABLE.material.color = PlayerColor;
+            }
         }
     }
 }

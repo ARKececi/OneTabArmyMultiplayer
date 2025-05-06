@@ -16,7 +16,7 @@ namespace PhotonSystem
         #region Self Variables
 
         #region Networked Variables
-
+        
         [Networked, Capacity(12)] public NetworkDictionary<PlayerRef, NetworkObject> PlayerData => default;
 
         #endregion
@@ -24,7 +24,8 @@ namespace PhotonSystem
         #region Serialized Variables
 
         [SerializeField]private NetworkPrefabRef PlayerPrefab;
-
+        [SerializeField]public List<Color> _playerColor;
+        
         #endregion
 
         #region Private Variables
@@ -53,8 +54,11 @@ namespace PhotonSystem
                         PlayerPrefab,
                         spawnPositon,
                         spawnRotation,
-                        inputAuthority: player // 👈 BU ÇOK ÖNEMLİ
+                        inputAuthority: player,// 👈 BU ÇOK ÖNEMLİ
+                        OnBeforeUpdate
                     );
+                    
+                    // playerObj.GetComponent<PlayerManager>().RPC_ColorSet();
                     Debug.Log($"Spawned player object for {player}, InputAuthority: {playerObj.InputAuthority}");
                     PlayerData.Add(player, playerObj);
                 }
@@ -67,6 +71,11 @@ namespace PhotonSystem
             PlayerData[player].GetComponent<PlayerManager>().Reset();
             Runner.Despawn(PlayerData[player]);
             PlayerData.Remove(player);
+        }
+
+        private void OnBeforeUpdate(NetworkRunner runner, NetworkObject networkObject)
+        {
+            networkObject.GetComponent<PlayerManager>().PlayerColor = _playerColor[PlayerData.Count];
         }
     }
 }
