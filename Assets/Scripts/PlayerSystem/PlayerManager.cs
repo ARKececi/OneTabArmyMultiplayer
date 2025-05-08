@@ -78,10 +78,12 @@ namespace PlayerSystem
             Runner.Despawn(_levelList[lwl].Tower);
         }
 
+
         private void OnBeforeUpdate(NetworkRunner runner, NetworkObject networkObject)
         {
             var controller = networkObject.GetComponent<TowerController>();
             controller.ColorToApply = PlayerColor;
+            controller.Parent = Object;
         }
 
         private void Awake()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Fusion;
+using SpawnSystem.Data.Enum;
 using UnityEngine;
 
 namespace SpawnSystem
@@ -8,6 +9,6 @@ namespace SpawnSystem
     [Serializable]
     public struct NPCPrefabData
     {
-        public SerializableDictionary<NPCPrefabEnum, NetworkPrefabRef> NPCPrefabs;
+        public SerializableDictionary<NPCEnum, NetworkPrefabRef> NPCPrefabs;
     }
 }

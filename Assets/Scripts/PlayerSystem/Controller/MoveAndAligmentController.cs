@@ -2,6 +2,7 @@
 using BotSystem;
 using Fusion;
 using SpawnSystem;
+using SpawnSystem.Data.Enum;
 using UnityEngine;
 
 namespace PlayerSystem.Controller
@@ -19,8 +20,8 @@ namespace PlayerSystem.Controller
 
         #region Private Variables
 
-        [SerializeField] private List<BotManager> moveNpcList = new List<BotManager>();
-        [SerializeField] private List<BotManager> spawnNpcList = new List<BotManager>();
+        [SerializeField] private List<NpcManager> moveNpcList = new List<NpcManager>();
+        [SerializeField] private List<NpcManager> spawnNpcList = new List<NpcManager>();
         
         private List<NetworkObject> spawnNpc = new();
         private float _timer;
@@ -36,7 +37,7 @@ namespace PlayerSystem.Controller
             _timer -= Runner.DeltaTime;
             if (_timer <= 0)
             {
-                RPC_SpawnObject(NPCPrefabEnum.Soldier);
+                RPC_SpawnObject(NPCEnum.Swordman);
                 _timer = Timer;
             }
         }
@@ -80,12 +81,12 @@ namespace PlayerSystem.Controller
         }
         
         
-        public void RPC_SpawnObject(NPCPrefabEnum npcPrefabEnum)
+        public void RPC_SpawnObject(NPCEnum npcEnum)
         {
             // Server'da çalışacak, Runner.Spawn burada çağrılmalı
-            var npc = SpawnController.OnSpawn(transform.position, npcPrefabEnum);
+            var npc = SpawnController.OnSpawn(transform.position, npcEnum);
             if (npc == null) return;
-            var botManager = npc.GetComponent<BotManager>();
+            var botManager = npc.GetComponent<NpcManager>();
             spawnNpc.Add(npc);
             AlignSpawnedBots(botManager, 7, 1f,1f);
         }
@@ -95,7 +96,7 @@ namespace PlayerSystem.Controller
         /// <summary>
         /// Spawn edilen botları belirli bir düzen içinde hizalar.
         /// </summary>
-        public void AlignHitdBots(Vector3 spawnPoint, List<BotManager> bots, int rowCount, float xSpacing, float zSpacing)
+        public void AlignHitdBots(Vector3 spawnPoint, List<NpcManager> bots, int rowCount, float xSpacing, float zSpacing)
         {
             if (bots == null || bots.Count == 0) return;
 
@@ -131,7 +132,7 @@ namespace PlayerSystem.Controller
         /// <summary>
         /// Spawn edilen botları _alignment objesi etrafında hizalar.
         /// </summary>
-        public void AlignSpawnedBots(BotManager bot, int rowCount, float xSpacing, float zSpacing)
+        public void AlignSpawnedBots(NpcManager npc, int rowCount, float xSpacing, float zSpacing)
         {
             if (_aligment == null)
             {
@@ -139,7 +140,7 @@ namespace PlayerSystem.Controller
                 return;
             }
 
-            spawnNpcList.Add(bot); // Yeni botu listeye ekle
+            spawnNpcList.Add(npc); // Yeni botu listeye ekle
 
             int botIndex = spawnNpcList.Count - 1; // Yeni eklenen botun indexi
             int row = botIndex / rowCount; // Kaçıncı satırda olduğunu bul
@@ -157,7 +158,7 @@ namespace PlayerSystem.Controller
             Vector3 newPos = basePosition + new Vector3(xOffset, 0, zOffset);
 
             // Botu belirlenen noktaya gönder
-            bot.OnHit(newPos);
+            npc.OnHit(newPos);
         }
         
         public void Reset()

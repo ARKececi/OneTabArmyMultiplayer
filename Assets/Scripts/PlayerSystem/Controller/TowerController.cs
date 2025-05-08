@@ -7,6 +7,8 @@ namespace PlayerSystem.Controller
     {
         #region Self Variables
         [Networked] public Color ColorToApply { set; get; }
+        
+        [Networked] public NetworkObject Parent { set; get; }
 
         #endregion
 
@@ -17,6 +19,7 @@ namespace PlayerSystem.Controller
             {
                 VARIABLE.material.color = ColorToApply;
             }
+            Object.transform.SetParent(Parent.transform);
         }
     }
 }

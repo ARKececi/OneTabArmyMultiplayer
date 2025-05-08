@@ -75,6 +75,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5884311132942272754}
+  - component: {fileID: 5594332000445794947}
   m_Layer: 0
   m_Name: mixamorig:LeftHandIndex3
   m_TagString: Untagged
@@ -97,6 +98,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5369927188089093351}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5594332000445794947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998748730011603285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1136389069
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours: []
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &1187805831180569402
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,7 +834,7 @@ GameObject:
   - component: {fileID: 6123946011166024624}
   - component: {fileID: 2386923843888014228}
   m_Layer: 0
-  m_Name: Soldier
+  m_Name: Sworman
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -853,7 +872,9 @@ MonoBehaviour:
   SortKey: 876514280
   ObjectInterest: 1
   Flags: 262145
-  NestedObjects: []
+  NestedObjects:
+  - {fileID: 5594332000445794947}
+  - {fileID: 7065110126082165324}
   NetworkedBehaviours:
   - {fileID: 5323246332956672966}
   - {fileID: 7811661094203869711}
@@ -890,10 +911,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyList: []
-  _Enemy: {fileID: 0}
+  _PlayerColor: {r: 0, g: 0, b: 0, a: 0}
   _Player: {fileID: 0}
+  _Fight: 0
   _agent: {fileID: 7060642804161847734}
-  _animationController: {fileID: 0}
+  _animationController: {fileID: 5719657766463639351}
+  _me: 0
+  Weapon: {fileID: 0}
+  WeaponSpawnPoint: {fileID: 998748730011603285}
+  npcSpawnObject:
+    LwlNpc:
+      _items:
+      - Key: 0
+        Value:
+          SpawnNpc:
+          - BodySpawnPoint: {fileID: 7065110126082165324}
+            SpawnObject: {fileID: 8657283444792429194, guid: 962734c966affd644a58c92c84643eba, type: 3}
 --- !u!195 &7060642804161847734
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1490,6 +1523,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8133645437061436781}
+  - component: {fileID: 7065110126082165324}
   m_Layer: 0
   m_Name: mixamorig:RightHandIndex3
   m_TagString: Untagged
@@ -1512,6 +1546,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7090630016118558731}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7065110126082165324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9062789101450395943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3275781049
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours: []
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &9157325741125729553
 GameObject:
   m_ObjectHideFlags: 0

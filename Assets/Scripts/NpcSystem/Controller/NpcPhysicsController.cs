@@ -10,7 +10,7 @@ namespace BotSystem.Controller
 
         #region Serialized Variables
 
-        [Networked] public BotManager _manager { set; get; }
+        [Networked] public NpcManager _manager { set; get; }
 
         #endregion
 
@@ -19,14 +19,14 @@ namespace BotSystem.Controller
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag(_manager.tag)) return;
-            if (!other.TryGetComponent<BotManager>(out var npc)) return;
+            if (!other.TryGetComponent<NpcManager>(out var npc)) return;
             _manager.AddEnemy(npc);
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (other.CompareTag(_manager.tag)) return;
-            if (!other.TryGetComponent<BotManager>(out var npc)) return;
+            if (!other.TryGetComponent<NpcManager>(out var npc)) return;
             _manager.RemoveEnemy(npc);
             
         }

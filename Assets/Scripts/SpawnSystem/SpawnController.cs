@@ -6,6 +6,7 @@ using Fusion;
 using InputSystem.Params;
 using PlayerSystem;
 using PlayerSystem.States;
+using SpawnSystem.Data.Enum;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -47,19 +48,23 @@ namespace SpawnSystem
         }
 
         
-        public NetworkObject OnSpawn(Vector3 position, NPCPrefabEnum eNpcPrefabEnum)
+        public NetworkObject OnSpawn(Vector3 position, NPCEnum eNpcEnum)
         {
             if (Runner == null)
             {
                 Debug.LogError("Runner is null");
                 return null;
             }
-            var npc = Runner.Spawn(prefabData.NPCPrefabs[eNpcPrefabEnum], position, Quaternion.identity,inputAuthority: PlayerRef.None,OnBeforeUpdate);
+            var npc = Runner.Spawn(
+                prefabData.NPCPrefabs[eNpcEnum],
+                position, Quaternion.identity,
+                inputAuthority: Object.InputAuthority,
+                OnBeforeUpdate);
             if (npc != null)
             {
                 spawnNpc.Add(npc);
                 npc.tag = Object.InputAuthority.ToString();
-                BotManager npcManagger = npc.GetComponent<BotManager>();
+                NpcManager npcManagger = npc.GetComponent<NpcManager>();
                 npcManagger.Player = Object;
             }
             
@@ -70,7 +75,7 @@ namespace SpawnSystem
 
         private void OnBeforeUpdate(NetworkRunner runner, NetworkObject networkObject)
         {
-            var manager = networkObject.GetComponent<BotManager>();
+            var manager = networkObject.GetComponent<NpcManager>();
             manager.PlayerColor = PlayerColor;
         }
         
