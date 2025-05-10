@@ -37,7 +37,7 @@ namespace PlayerSystem.Controller
             _timer -= Runner.DeltaTime;
             if (_timer <= 0)
             {
-                RPC_SpawnObject(NPCEnum.Swordman);
+                RPC_SpawnObject(NPCEnum.Archer);
                 _timer = Timer;
             }
         }

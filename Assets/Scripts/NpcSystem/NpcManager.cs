@@ -26,6 +26,7 @@ namespace BotSystem
         public List<NpcManager> EnemyList = new();// hedef manager;
         [Networked] public Color PlayerColor { get; set; }
         [Networked] public NetworkObject Player{ get; set; }
+        [Networked] public Vector3 Position { get; set; }
         
 
         #endregion
@@ -139,12 +140,20 @@ namespace BotSystem
         
         private void OnBeforeUpdate(NetworkRunner runner, NetworkObject networkObject)
         {
-            if (_me == NPCEnum.Swordman)
+            ConvergentWeapons compA = networkObject.GetComponent<ConvergentWeapons>();
+            DistancerWeapons compB = networkObject.GetComponent<DistancerWeapons>();
+            
+            if (compA != null)
             {
-                ConvergentWeapons manager = networkObject.GetComponent<ConvergentWeapons>();
-                manager.Damage = damage;
-                manager.Parent = Parrentobj;
-                manager.GrandParent = Object;
+                compA.Damage = damage;
+                compA.Parent = Parrentobj;
+                compA.GrandParent = Object;
+            }
+            else if (compB != null)
+            {
+                compB.Damage = damage;
+                compB.Parent = Parrentobj;
+                compB.GrandParent = Object;
             }
         }
 
@@ -163,7 +172,8 @@ namespace BotSystem
             if (EnemyList.Count > 0)
             { 
                 if (GetClosestTransform(EnemyList,transform.position) == null) return;
-                if (!fight)_agent.destination = GetClosestTransform(EnemyList,transform.position).transform.position;
+                Position = GetClosestTransform(EnemyList, transform.position).transform.position;
+                if (!fight)_agent.destination = Position;
                 
                 
                 var distance = Vector3.Distance(Object.transform.position, GetClosestTransform(EnemyList,transform.position).transform.position);

@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 9095005730639964365}
   - component: {fileID: 6270391139985686767}
   - component: {fileID: 6120649290574125514}
+  - component: {fileID: 6722713390411296563}
+  - component: {fileID: 7041367471064684996}
   m_Layer: 0
   m_Name: Bow
   m_TagString: Untagged
@@ -83,3 +85,39 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6722713390411296563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477723990764382523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3959849546
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 7041367471064684996}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &7041367471064684996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477723990764382523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f908de4f78148bdaa3a64d1a61e2655, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 0
+  _Parent: {fileID: 0}
+  _GrandParent: {fileID: 0}
+  Timer: 0
+  _arrow: {fileID: 7201866122491194332, guid: 4adbd507a5260ec4db6e42e5078019ad, type: 3}

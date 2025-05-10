@@ -4,62 +4,85 @@ using UnityEngine;
 
 namespace BotSystem.Controller.Weapons
 {
-    public class DistancerPhysiscsController :  NetworkBehaviour
+    public class DistancerPhysiscsController : NetworkBehaviour
     {
-        #region Self Variables
+        [Networked] public DistancerWeapons Wepaon { get; set; }
 
-        #region Public Variables
+        [SerializeField] private float travelDuration = 1.5f;
+        [SerializeField] private float arcHeightMultiplier = 1f;
+
+        [Networked]private bool isLaunched { get; set; }
+        [Networked]private Vector3 start { get; set; }
+        [Networked]private Vector3 end { get; set; }
         
-        [Networked]public DistancerWeapons _wepaon { get; set; }
+        private Vector3 previousPosition;
+        private float elapsedTime;
 
-        #endregion
-
-        #region Serialized Variables
-
-        [SerializeField] private Rigidbody rb;
-        [SerializeField] private float gravityMultiplier = 1f;
-
-        #endregion
-
-        #region Private Variables
-
-        private bool isLaunched = false;
-
-        #endregion
-
-        #endregion
-        
-        public void Launch(Vector3 target)
+        public override void Spawned()
         {
-            if (isLaunched) return;
+            // Rigidbody ayarlarını burada güvenli şekilde yap
 
-            isLaunched = true;
-            Physics.gravity *= gravityMultiplier;
-
-            Vector3 startPos = transform.position;
-            Vector3 direction = target - startPos;
-
-            // Yatay ve düşey farkları ayır
-            Vector3 horizontal = new Vector3(direction.x, 0, direction.z);
-            float distance = horizontal.magnitude;
-            float height = direction.y;
-
-            float arcHeight = distance / 2f; // 🎯 Yükseklik = mesafenin yarısı
-
-            // Parabolik kuvvet hesaplaması
-            float velocityY = Mathf.Sqrt(2 * Physics.gravity.magnitude * arcHeight);
-            float timeToApex = velocityY / Physics.gravity.magnitude;
-            float totalTime = timeToApex + Mathf.Sqrt(2 * Mathf.Max(0.1f, (arcHeight - height)) / Physics.gravity.magnitude);
-
-            Vector3 velocityXZ = horizontal / totalTime;
-            Vector3 finalVelocity = velocityXZ + Vector3.up * velocityY;
-
-            rb.AddForce(finalVelocity, ForceMode.VelocityChange);
         }
 
-        public void OnTriggerEnter(Collider other)
+        public void Launch(Vector3 target)
         {
-            _wepaon.OnTrigger(other);
+            start = transform.position;
+            end = target;
+            elapsedTime = 0f;
+            isLaunched = true;
+            previousPosition = start;
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if (!HasStateAuthority || !isLaunched) return;
+            
+            elapsedTime += Runner.DeltaTime;
+            float t = Mathf.Clamp01(elapsedTime / travelDuration);
+
+            // Lineer pozisyon
+            Vector3 linearPos = Vector3.Lerp(start, end, t);
+
+            // Yay eğrisi
+            float arc = arcHeightMultiplier * Mathf.Sin(Mathf.PI * t);
+            Vector3 heightOffset = Vector3.up * arc;
+
+            Vector3 currentPosition = linearPos + heightOffset;
+            transform.position = currentPosition;
+
+            // Yönünü hareket yönüne göre ayarla
+            Vector3 moveDirection = (currentPosition - previousPosition).normalized;
+            if (moveDirection.sqrMagnitude > 0.001f)
+            {
+                transform.rotation = Quaternion.LookRotation(moveDirection);
+            }
+
+            previousPosition = currentPosition;
+
+            if (t >= 1f)
+            {
+                isLaunched = false;
+                // Burada hedefe ulaştıktan sonra bir şeyler yapılabilir
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!HasStateAuthority) return;
+
+            if (other.CompareTag("Plane") || Wepaon == null)
+            {
+                GetComponent<Collider>().enabled = false; return;
+            }
+            if (Wepaon.Parent == null) return;
+            if (other.CompareTag(Wepaon.GrandParent.tag)) return;
+            if (other.TryGetComponent<NpcManager>(out var npc))
+            {
+                Debug.Log($"Arrow hit: {other.tag}");
+                Wepaon.OnTrigger(npc);
+                // Ok çarptığında yok et
+            }
+            Runner.Despawn(Object);
         }
     }
 }

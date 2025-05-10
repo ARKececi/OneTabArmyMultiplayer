@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BotSystem.Controller.Weapons;
 using Fusion;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace BotSystem.Controller
 
         #region Private Variables
 
-        private DistancerPhysiscsController arrow;
+        [Networked] private DistancerPhysiscsController arrow { get; set; }
         private float timer;
 
         #endregion
@@ -41,14 +42,9 @@ namespace BotSystem.Controller
             timer = Timer;
         }
 
-        public void OnTrigger(Collider col)
+        public void OnTrigger(NpcManager npc)
         {
-            if (Parent == null) return;
-            if (col.CompareTag(GrandParent.tag)) return;
-            if (col.TryGetComponent<NpcManager>(out var npc))
-            {
                 npc.OnSetDamage(Damage);
-            }
         }
 
         public void ArrowSpawn()
@@ -57,7 +53,7 @@ namespace BotSystem.Controller
                 _arrow,
                 transform.position,
                 transform.rotation,
-                inputAuthority: Object.InputAuthority,
+                inputAuthority: Runner.LocalPlayer,
                 OnBeforeUpdate);
             
         }
@@ -65,26 +61,30 @@ namespace BotSystem.Controller
         public void OnBeforeUpdate(NetworkRunner runner, NetworkObject networkObject)
         {
             var weapon = networkObject.GetComponent<DistancerPhysiscsController>();
-            weapon._wepaon = this;
+            weapon.Wepaon = this;
             arrow = weapon;
-
         }
 
-        private void FireTimer()
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        private async void RPC_FireTimer()
         {
             if (timer <= 0)
             {
                 timer = Timer;
                 ArrowSpawn();
+                await Task.Yield();
+                arrow.Launch(GrandParent.GetComponent<NpcManager>().Position);
+                arrow = null;
             }
             timer -= Time.deltaTime;
         }
 
         public void Update()
         {
+            if (!HasInputAuthority) return;
             if (GrandParent.GetComponent<NpcManager>().fight)
             {
-                FireTimer();
+                RPC_FireTimer();
             }
             else
             {
