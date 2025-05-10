@@ -19,3 +19,10 @@ MonoBehaviour:
         Healt: 150
         Damage: 10
         AttackTime: 1
+        AttackField: 0.7
+    - Key: 1
+      Value:
+        Healt: 100
+        Damage: 25
+        AttackTime: 1.5
+        AttackField: 10

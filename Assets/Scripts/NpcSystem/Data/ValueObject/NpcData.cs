@@ -8,5 +8,6 @@ namespace BotSystem.Data.ValueObject
         public int Healt;
         public int Damage;
         public float AttackTime;
+        public float AttackField;
     }
 }

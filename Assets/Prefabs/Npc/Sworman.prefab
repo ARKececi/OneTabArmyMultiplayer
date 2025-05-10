@@ -913,12 +913,10 @@ MonoBehaviour:
   EnemyList: []
   _PlayerColor: {r: 0, g: 0, b: 0, a: 0}
   _Player: {fileID: 0}
-  _Fight: 0
   _agent: {fileID: 7060642804161847734}
   _animationController: {fileID: 5719657766463639351}
   _me: 0
   Weapon: {fileID: 0}
-  WeaponSpawnPoint: {fileID: 998748730011603285}
   npcSpawnObject:
     LwlNpc:
       _items:
@@ -927,6 +925,9 @@ MonoBehaviour:
           SpawnNpc:
           - BodySpawnPoint: {fileID: 7065110126082165324}
             SpawnObject: {fileID: 8657283444792429194, guid: 962734c966affd644a58c92c84643eba, type: 3}
+  _atackField: 0
+  _healt: 0
+  _attackTime: 0
 --- !u!195 &7060642804161847734
 NavMeshAgent:
   m_ObjectHideFlags: 0

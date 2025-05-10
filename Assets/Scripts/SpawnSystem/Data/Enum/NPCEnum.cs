@@ -2,6 +2,7 @@
 {
     public enum NPCEnum
     {
-        Swordman
+        Swordman,
+        Archer
     }
 }

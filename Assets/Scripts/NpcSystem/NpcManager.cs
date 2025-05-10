@@ -50,8 +50,9 @@ namespace BotSystem
         [Networked] public float attackTime { get; set; }
         private NetworkObject Parrentobj;
         
-        [Networked] private bool fight { get; set; }
+        [Networked] public bool fight { get; set; }
         [Networked] private bool wait { get; set; }
+        [Networked] private float atackField { get; set; }
 
         #endregion
 
@@ -59,11 +60,12 @@ namespace BotSystem
 
         private void DataSet()
         {
-            if (!HasStateAuthority) return;
+            // if (!HasStateAuthority) return;
             var data = Resources.Load<SO_NpcData>("Data/SO_NpcData").NpcData;
             healt = data[_me].Healt;
             damage = data[_me].Damage;
             attackTime = data[_me].AttackTime;
+            atackField = data[_me].AttackField;
             wait = false;
         }
 
@@ -165,7 +167,7 @@ namespace BotSystem
                 
                 
                 var distance = Vector3.Distance(Object.transform.position, GetClosestTransform(EnemyList,transform.position).transform.position);
-                if ( _agent.velocity.magnitude > 0.7f || distance > 1f)
+                if ( _agent.velocity.magnitude > 0.7f || distance > atackField)
                 {
                     if (_agent.velocity.magnitude > 0.7f)
                     {
@@ -208,7 +210,7 @@ namespace BotSystem
         {
             if (wait) return;
             EnemyList.Add(npcManager);
-            _agent.stoppingDistance = 1f;
+            _agent.stoppingDistance = atackField;
         }
         
         public void RemoveEnemy(NpcManager npcManager)

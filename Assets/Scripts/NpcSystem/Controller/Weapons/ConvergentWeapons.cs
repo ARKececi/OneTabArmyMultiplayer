@@ -27,11 +27,9 @@ namespace BotSystem.Controller.Weapons
         private void OnTriggerEnter(Collider other)
         {
             if (Parent == null) return;
-            if (!Parent.HasInputAuthority) return;
             if (other.CompareTag(GrandParent.tag)) return;
             if (other.TryGetComponent<NpcManager>(out var npc))
             {
-                if (!HasInputAuthority) return;
                 npc.OnSetDamage(Damage);
             }
         }
