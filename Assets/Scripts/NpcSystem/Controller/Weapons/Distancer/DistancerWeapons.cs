@@ -27,7 +27,7 @@ namespace BotSystem.Controller
 
         #region Private Variables
 
-        [Networked] private DistancerPhysiscsController arrow { get; set; }
+        [Networked] private DistancerPhysiscsController bullet { get; set; }
         private float timer;
 
         #endregion
@@ -60,9 +60,10 @@ namespace BotSystem.Controller
 
         public void OnBeforeUpdate(NetworkRunner runner, NetworkObject networkObject)
         {
-            var weapon = networkObject.GetComponent<DistancerPhysiscsController>();
-            weapon.Wepaon = this;
-            arrow = weapon;
+            var arrow = networkObject.GetComponent<DistancerPhysiscsController>();
+            arrow.Damage = Damage;
+            arrow.tag = GrandParent.tag;
+            bullet = arrow;
         }
 
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
@@ -73,8 +74,8 @@ namespace BotSystem.Controller
                 timer = Timer;
                 ArrowSpawn();
                 await Task.Yield();
-                arrow.Launch(GrandParent.GetComponent<NpcManager>().Position);
-                arrow = null;
+                bullet.Launch(GrandParent.GetComponent<NpcManager>().Position);
+                bullet = null;
             }
             timer -= Time.deltaTime;
         }

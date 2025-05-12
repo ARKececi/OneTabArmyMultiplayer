@@ -6,10 +6,23 @@ namespace BotSystem.Controller.Weapons
 {
     public class DistancerPhysiscsController : NetworkBehaviour
     {
-        [Networked] public DistancerWeapons Wepaon { get; set; }
+
+        #region Self Variables
+
+        #region Public Variables
+        
+        [Networked]public int Damage { get; set; }
+
+        #endregion
+
+        #region Serialized Variables
 
         [SerializeField] private float travelDuration = 1.5f;
         [SerializeField] private float arcHeightMultiplier = 1f;
+
+        #endregion
+
+        #region Private Variables
 
         [Networked]private bool isLaunched { get; set; }
         [Networked]private Vector3 start { get; set; }
@@ -17,11 +30,14 @@ namespace BotSystem.Controller.Weapons
         
         private Vector3 previousPosition;
         private float elapsedTime;
+        
+        #endregion
+
+        #endregion
 
         public override void Spawned()
         {
             // Rigidbody ayarlarını burada güvenli şekilde yap
-
         }
 
         public void Launch(Vector3 target)
@@ -69,20 +85,14 @@ namespace BotSystem.Controller.Weapons
         private void OnTriggerEnter(Collider other)
         {
             if (!HasStateAuthority) return;
-
-            if (other.CompareTag("Plane") || Wepaon == null)
-            {
-                GetComponent<Collider>().enabled = false; return;
-            }
-            if (Wepaon.Parent == null) return;
-            if (other.CompareTag(Wepaon.GrandParent.tag)) return;
+            if (other.CompareTag(Object.tag)) return;
             if (other.TryGetComponent<NpcManager>(out var npc))
             {
+                npc.OnSetDamage(Damage);
                 Debug.Log($"Arrow hit: {other.tag}");
-                Wepaon.OnTrigger(npc);
-                // Ok çarptığında yok et
             }
-            Runner.Despawn(Object);
+            if (other.CompareTag("Plane") || !other.CompareTag(Object.tag)) Runner.Despawn(Object);
+            
         }
     }
 }

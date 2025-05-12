@@ -68,8 +68,6 @@ namespace SpawnSystem
                 npcManagger.Player = Object;
             }
             
-            
-            
             return npc;
         }
 
