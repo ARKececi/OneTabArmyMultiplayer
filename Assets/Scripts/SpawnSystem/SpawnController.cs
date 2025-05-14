@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BotSystem;
 using Fusion;
-using InputSystem.Params;
-using PlayerSystem;
-using PlayerSystem.States;
 using SpawnSystem.Data.Enum;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace SpawnSystem
 {
@@ -40,11 +34,6 @@ namespace SpawnSystem
         public void Awake()
         {
             prefabData = Resources.Load<SO_NPCPrefabs>("Data/SO_NPCPrefabs").NPCData;
-        }
-
-        public override void Spawned()
-        {
-            
         }
 
         

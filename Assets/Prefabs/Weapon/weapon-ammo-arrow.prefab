@@ -100,7 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c4bf825675ec9f4689f8b5a37b53db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Wepaon: {fileID: 0}
+  _Damage: 0
+  Timer: 5
   travelDuration: 1.5
   arcHeightMultiplier: 1
 --- !u!114 &7201866122491194332

@@ -78,6 +78,7 @@ namespace BotSystem
             if (!HasInputAuthority) return;
             RPC_ItemSpawn(0);
         }
+        
 
         public void Update()
         {

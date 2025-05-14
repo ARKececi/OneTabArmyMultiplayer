@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BotSystem;
+using Extentions.GameSystem;
 using Fusion;
 using SpawnSystem;
 using SpawnSystem.Data.Enum;
@@ -22,11 +24,13 @@ namespace PlayerSystem.Controller
 
         [SerializeField] private List<NpcManager> moveNpcList = new List<NpcManager>();
         [SerializeField] private List<NpcManager> spawnNpcList = new List<NpcManager>();
+        public NPCEnum _npc { get; set; }
         
         private List<NetworkObject> spawnNpc = new();
         private float _timer;
 
         private SpawnController SpawnController;
+        [Networked] public bool start { set; get; }
         
         #endregion
 
@@ -34,6 +38,7 @@ namespace PlayerSystem.Controller
         
         private void TimerClass()
         {
+            if (!start) return;
             _timer -= Runner.DeltaTime;
             if (_timer <= 0)
             {
@@ -44,11 +49,33 @@ namespace PlayerSystem.Controller
 
         public override void Spawned()
         {
-            
+            PlayerSignals.Instance.onSpawnEnum += RPC_OnSpawnEnum;
+            GameSignals.Instance.onGame += RPC_OnStart;
+        }
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        private void RPC_OnStart()
+        {
+            start = true;
+        }
+        
+        private void RPC_OnSpawnEnum(CardType npcEnum, int lwl)
+        {
+            Debug.Log(HasInputAuthority);
+            if (!HasInputAuthority) return;
+            foreach (NPCEnum VARIABLE in Enum.GetValues(typeof(NPCEnum)))
+            {
+                if (VARIABLE.ToString() == npcEnum.ToString())
+                {
+                    _npc = VARIABLE;
+                }
+            }
+            Debug.Log(_npc);
         }
 
         public void Awake()
         {
+            
             SpawnController = GetComponent<SpawnController>(); // veya doğrudan referansla bağla
             _timer = Timer;
         }
@@ -80,11 +107,10 @@ namespace PlayerSystem.Controller
             AlignHitdBots(move, moveNpcList, 7, 1f, 1f);
         }
         
-        
         public void RPC_SpawnObject(NPCEnum npcEnum)
         {
             // Server'da çalışacak, Runner.Spawn burada çağrılmalı
-            var npc = SpawnController.OnSpawn(transform.position, npcEnum);
+            var npc = SpawnController.OnSpawn(transform.position, _npc);
             if (npc == null) return;
             var botManager = npc.GetComponent<NpcManager>();
             spawnNpc.Add(npc);

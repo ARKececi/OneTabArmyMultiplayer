@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Extentions.GameSystem;
 using Fusion;
 using InputSystem.Params;
 using PlayerSystem.Controller;
@@ -17,6 +18,7 @@ namespace PlayerSystem
         #region Public Variables
 
         [Networked] public Color PlayerColor { get; set; }
+        [Networked] public bool IsReady { get; set; }
         
         #endregion
 
@@ -90,6 +92,18 @@ namespace PlayerSystem
         {
             moveAndAligmentController = GetComponent<MoveAndAligmentController>();
             _levelList = Resources.Load<SO_TowerLwlData>("Data/SO_TowerLwlData").lwls;
+        }
+        
+        public void SetReady()
+        {
+            RPC_SetReady(true);
+        }
+        
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        private void RPC_SetReady(bool ready)
+        {
+            IsReady = ready;
+            GameSignals.Instance.CheckAllPlayersReady?.Invoke();
         }
         
         private Vector3 ConvertToWorldPosition(Vector2 screenPosition)

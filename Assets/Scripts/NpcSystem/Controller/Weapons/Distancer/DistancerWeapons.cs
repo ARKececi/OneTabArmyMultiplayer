@@ -53,7 +53,7 @@ namespace BotSystem.Controller
                 _arrow,
                 transform.position,
                 transform.rotation,
-                inputAuthority: Runner.LocalPlayer,
+                inputAuthority: Object.InputAuthority,
                 OnBeforeUpdate);
             
         }
@@ -62,7 +62,7 @@ namespace BotSystem.Controller
         {
             var arrow = networkObject.GetComponent<DistancerPhysiscsController>();
             arrow.Damage = Damage;
-            arrow.tag = GrandParent.tag;
+            arrow.tag = Object.InputAuthority.ToString();
             bullet = arrow;
         }
 
