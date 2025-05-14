@@ -24,7 +24,7 @@ namespace PlayerSystem.Controller
 
         [SerializeField] private List<NpcManager> moveNpcList = new List<NpcManager>();
         [SerializeField] private List<NpcManager> spawnNpcList = new List<NpcManager>();
-        public NPCEnum _npc { get; set; }
+        [Networked] public NPCEnum _npc { get; set; }
         
         private List<NetworkObject> spawnNpc = new();
         private float _timer;
@@ -42,14 +42,14 @@ namespace PlayerSystem.Controller
             _timer -= Runner.DeltaTime;
             if (_timer <= 0)
             {
-                RPC_SpawnObject(NPCEnum.Archer);
+                RPC_SpawnObject(_npc);
                 _timer = Timer;
             }
         }
 
         public override void Spawned()
         {
-            PlayerSignals.Instance.onSpawnEnum += RPC_OnSpawnEnum;
+            PlayerSignals.Instance.onSpawnEnum += OnSpawnEnum;
             GameSignals.Instance.onGame += RPC_OnStart;
         }
 
@@ -58,11 +58,17 @@ namespace PlayerSystem.Controller
         {
             start = true;
         }
-        
-        private void RPC_OnSpawnEnum(CardType npcEnum, int lwl)
+
+        private void OnSpawnEnum(CardType npcEnum, int lwl)
         {
-            Debug.Log(HasInputAuthority);
             if (!HasInputAuthority) return;
+            RPC_OnSpawnEnum(npcEnum);
+            Debug.Log("buradssadsd");
+        }
+        
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        private void RPC_OnSpawnEnum(CardType npcEnum)
+        {
             foreach (NPCEnum VARIABLE in Enum.GetValues(typeof(NPCEnum)))
             {
                 if (VARIABLE.ToString() == npcEnum.ToString())
@@ -70,7 +76,7 @@ namespace PlayerSystem.Controller
                     _npc = VARIABLE;
                 }
             }
-            Debug.Log(_npc);
+            
         }
 
         public void Awake()
@@ -109,8 +115,9 @@ namespace PlayerSystem.Controller
         
         public void RPC_SpawnObject(NPCEnum npcEnum)
         {
+            Debug.Log("moveand" +npcEnum);
             // Server'da çalışacak, Runner.Spawn burada çağrılmalı
-            var npc = SpawnController.OnSpawn(transform.position, _npc);
+            var npc = SpawnController.OnSpawn(transform.position,npcEnum);
             if (npc == null) return;
             var botManager = npc.GetComponent<NpcManager>();
             spawnNpc.Add(npc);
