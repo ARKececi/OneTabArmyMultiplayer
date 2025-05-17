@@ -8,6 +8,7 @@ using BotSystem.Data.UnityObject;
 using BotSystem.Data.ValueObject;
 using Fusion;
 using PlayerSystem;
+using PlayerSystem.Controller;
 using SpawnSystem.Animation;
 using SpawnSystem.Data.Enum;
 using Unity.VisualScripting;
@@ -109,6 +110,8 @@ namespace BotSystem
             healt -= damage;
             if (healt > 0) return;
             RPC_AnimationControl(AnimationEnum.Dead);
+            PlayerSignals.Instance.onExp?.Invoke(Object,2);
+            Player.GetComponent<MoveAndAligmentController>().RPC_RemoveMoveList(this);
             OnDeSpawn();
                 wait = true;
         }
@@ -191,6 +194,7 @@ namespace BotSystem
                 }
                 else
                 {
+                    if (!fight) Player.GetComponent<MoveAndAligmentController>().RPC_RemoveMoveList(this);
                     fight = true;
                     RPC_AnimationControl(AnimationEnum.Fight);
                     _agent.ResetPath();
@@ -226,7 +230,7 @@ namespace BotSystem
         
         public void RemoveEnemy(NpcManager npcManager)
         {
-            if (EnemyList[0] == npcManager) fight = false;
+            if (npcManager == null) return;
             EnemyList.Remove(npcManager);
             if (EnemyList.Count == 0)
             {
@@ -238,6 +242,7 @@ namespace BotSystem
         private void NullClear(NpcManager npc)
         {
             EnemyList.Remove(npc);
+            Player.GetComponent<MoveAndAligmentController>().RPC_AddMoveList(this);
             fight = false;
         }
         

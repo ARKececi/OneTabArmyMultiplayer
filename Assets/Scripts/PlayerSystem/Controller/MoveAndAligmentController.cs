@@ -63,7 +63,6 @@ namespace PlayerSystem.Controller
         {
             if (!HasInputAuthority) return;
             RPC_OnSpawnEnum(npcEnum);
-            Debug.Log("buradssadsd");
         }
         
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
@@ -132,6 +131,17 @@ namespace PlayerSystem.Controller
         public void AlignHitdBots(Vector3 spawnPoint, List<NpcManager> bots, int rowCount, float xSpacing, float zSpacing)
         {
             if (bots == null || bots.Count == 0) return;
+            List<NpcManager> list = new List<NpcManager>();
+            foreach (var VARIABLE in moveNpcList)
+            {
+                if (VARIABLE == null)
+                    list.Add(VARIABLE);
+            }
+
+            foreach (var VARIABLE in list)
+            {
+                RPC_RemoveMoveList(VARIABLE);
+            }
 
             int columnTotal = Mathf.CeilToInt((float)bots.Count / rowCount); // Kaç sütun olacağını belirle
 
@@ -192,6 +202,19 @@ namespace PlayerSystem.Controller
 
             // Botu belirlenen noktaya gönder
             npc.OnHit(newPos);
+        }
+        
+        public void RPC_AddMoveList(NpcManager npc)
+        {
+            if (!HasInputAuthority) return;
+            moveNpcList.Add(npc);
+        }
+        
+        public void RPC_RemoveMoveList(NpcManager npc)
+        {
+            if (!HasInputAuthority) return;
+            moveNpcList.Remove(npc);
+            moveNpcList.TrimExcess();
         }
         
         public void Reset()

@@ -45,6 +45,7 @@ namespace PlayerSystem
 
         [Networked] private NetworkObject tower { get; set; }
         private MoveAndAligmentController moveAndAligmentController;
+        [SerializeField]private ScoreController scoreController;
         private float _timer;
 
         #endregion
@@ -55,10 +56,23 @@ namespace PlayerSystem
         {
             if (!HasInputAuthority) return;
             cameraInstance = Instantiate(_cameraPrefab, transform, true);
+            scoreController = FindObjectOfType<ScoreController>();
             cameraInstance.transform.localPosition = _camTransform.localPosition;
             cameraInstance.transform.rotation = _camTransform.rotation;
             RPC_TowerObject();
             RPC_SetColor();
+            Subscribe();
+        }
+
+        private void Subscribe()
+        {
+            PlayerSignals.Instance.onExp += OnExp;
+        }
+
+        private void OnExp(NetworkObject networkObject, int exp)
+        {
+            if (Object.InputAuthority == networkObject.InputAuthority)return;
+            scoreController.TowerEXP(exp);
         }
         
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]

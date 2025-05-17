@@ -1,4 +1,5 @@
 ﻿using Extentions;
+using Fusion;
 using SpawnSystem.Data.Enum;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,5 +10,6 @@ namespace PlayerSystem
     {
         public UnityAction onGame = delegate{};
         public UnityAction<CardType,int> onSpawnEnum = delegate{};
+        public UnityAction<NetworkObject, int> onExp = delegate { };
     }
 }
