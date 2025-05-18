@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Damage: 0
-  Timer: 5
+  Timer: 2
   travelDuration: 1.5
   arcHeightMultiplier: 1
 --- !u!114 &7201866122491194332

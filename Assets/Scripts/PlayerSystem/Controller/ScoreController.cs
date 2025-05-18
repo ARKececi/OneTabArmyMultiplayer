@@ -40,7 +40,6 @@ namespace PlayerSystem.Controller
             _exp.text = $"{exp}/{10 + 5 * lwl}";
             float maxExp = 10 + 5 * lwl;
             ExpBar.value = Mathf.Clamp01( exp / maxExp);
-            Debug.Log(maxExp);
             
 
             if (!(exp >= 10 + 5 * lwl)) return;

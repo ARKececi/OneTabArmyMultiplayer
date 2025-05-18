@@ -31,7 +31,7 @@ namespace Extentions.GameSystem
         public void CheckAllPlayersReady()
         {
             var players = FindObjectsOfType<PlayerManager>();
-
+            if (players.Length < 2) return;
             if (players.Any(player => !player.IsReady))
             {
                 return;

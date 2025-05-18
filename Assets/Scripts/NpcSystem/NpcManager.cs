@@ -44,7 +44,7 @@ namespace BotSystem
 
         #region Private Variables
 
-        private Vector3 Hit { get; set; }
+        [SerializeField] private Vector3 Hit;
         private AnimationEnum animationEnum;
 
         [Networked] public int healt { get; set; }
@@ -53,7 +53,7 @@ namespace BotSystem
         private NetworkObject Parrentobj;
         
         [Networked] public bool fight { get; set; }
-        [Networked] private bool wait { get; set; }
+        [Networked] public bool wait { get; set; }
         [Networked] private float atackField { get; set; }
 
         #endregion
@@ -111,7 +111,7 @@ namespace BotSystem
             if (healt > 0) return;
             RPC_AnimationControl(AnimationEnum.Dead);
             PlayerSignals.Instance.onExp?.Invoke(Object,2);
-            Player.GetComponent<MoveAndAligmentController>().RPC_RemoveMoveList(this);
+            
             OnDeSpawn();
                 wait = true;
         }
@@ -194,7 +194,7 @@ namespace BotSystem
                 }
                 else
                 {
-                    if (!fight) Player.GetComponent<MoveAndAligmentController>().RPC_RemoveMoveList(this);
+                    
                     fight = true;
                     RPC_AnimationControl(AnimationEnum.Fight);
                     _agent.ResetPath();
@@ -224,25 +224,27 @@ namespace BotSystem
         public void AddEnemy(NpcManager npcManager)
         {
             if (wait) return;
+            if (EnemyList.Count == 0) Player.GetComponent<MoveAndAligmentController>().RPC_RemoveMoveList(this);
             EnemyList.Add(npcManager);
             _agent.stoppingDistance = atackField;
         }
         
         public void RemoveEnemy(NpcManager npcManager)
         {
-            if (npcManager == null) return;
-            EnemyList.Remove(npcManager);
+            // if (npcManager == null) return;
+            // EnemyList.Remove(npcManager);
             if (EnemyList.Count == 0)
             {
+                Debug.Log("düşman 0");
+                
                 Hit = transform.position;
-                _agent.stoppingDistance = 0;
+                
             }
         }
 
         private void NullClear(NpcManager npc)
         {
             EnemyList.Remove(npc);
-            Player.GetComponent<MoveAndAligmentController>().RPC_AddMoveList(this);
             fight = false;
         }
         
@@ -276,6 +278,11 @@ namespace BotSystem
                 NullClear(VARIABLE);
             }
 
+            if (closest == null)
+            {
+                Player.GetComponent<MoveAndAligmentController>().RPC_AddMoveList(this);
+                _agent.stoppingDistance = 0;
+            }
             return closest;
         }
 

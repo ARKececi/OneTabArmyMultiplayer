@@ -12,7 +12,7 @@ namespace BotSystem.Controller.Weapons
         #region Public Variables
         
         [Networked]public int Damage { get; set; }
-        public float Timer;
+        [Networked]public float Timer { get; set; }
 
         #endregion
 
@@ -42,15 +42,6 @@ namespace BotSystem.Controller.Weapons
             timer = Timer;
         }
 
-        private void DeadTimer()
-        {
-            if (timer <= 0)
-            {
-                Runner.Despawn(Object);
-            }
-            timer -= Runner.DeltaTime;
-        }
-
         public void Launch(Vector3 target)
         {
             start = transform.position;
@@ -63,7 +54,6 @@ namespace BotSystem.Controller.Weapons
         public override void FixedUpdateNetwork()
         {
             if (!HasStateAuthority || !isLaunched) return;
-            DeadTimer();
             elapsedTime += Runner.DeltaTime;
             float t = Mathf.Clamp01(elapsedTime / travelDuration);
 
@@ -96,6 +86,11 @@ namespace BotSystem.Controller.Weapons
         private void OnTriggerEnter(Collider other)
         {
             if (!HasStateAuthority) return;
+            if (other.CompareTag("Plane"))
+            {
+                Runner.Despawn(Object);
+                return;
+            }
             if (other.CompareTag(Object.tag)) return;
             if (!other.TryGetComponent<NpcManager>(out var npc)) return;
             npc.OnSetDamage(Damage);

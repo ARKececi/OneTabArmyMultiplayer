@@ -25,6 +25,7 @@ namespace PlayerSystem.Controller
         [SerializeField] private List<NpcManager> moveNpcList = new List<NpcManager>();
         [SerializeField] private List<NpcManager> spawnNpcList = new List<NpcManager>();
         [Networked] public NPCEnum _npc { get; set; }
+        [Networked] private int lwl { get; set; }
         
         private List<NetworkObject> spawnNpc = new();
         private float _timer;
@@ -42,7 +43,7 @@ namespace PlayerSystem.Controller
             _timer -= Runner.DeltaTime;
             if (_timer <= 0)
             {
-                RPC_SpawnObject(_npc);
+                RPC_SpawnObject(_npc,lwl);
                 _timer = Timer;
             }
         }
@@ -62,17 +63,18 @@ namespace PlayerSystem.Controller
         private void OnSpawnEnum(CardType npcEnum, int lwl)
         {
             if (!HasInputAuthority) return;
-            RPC_OnSpawnEnum(npcEnum);
+            RPC_OnSpawnEnum(npcEnum,lwl);
         }
         
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-        private void RPC_OnSpawnEnum(CardType npcEnum)
+        private void RPC_OnSpawnEnum(CardType npcEnum, int npcLwl)
         {
             foreach (NPCEnum VARIABLE in Enum.GetValues(typeof(NPCEnum)))
             {
                 if (VARIABLE.ToString() == npcEnum.ToString())
                 {
                     _npc = VARIABLE;
+                    lwl = npcLwl;
                 }
             }
             
@@ -112,9 +114,8 @@ namespace PlayerSystem.Controller
             AlignHitdBots(move, moveNpcList, 7, 1f, 1f);
         }
         
-        public void RPC_SpawnObject(NPCEnum npcEnum)
+        public void RPC_SpawnObject(NPCEnum npcEnum, int lwl)
         {
-            Debug.Log("moveand" +npcEnum);
             // Server'da çalışacak, Runner.Spawn burada çağrılmalı
             var npc = SpawnController.OnSpawn(transform.position,npcEnum);
             if (npc == null) return;
@@ -204,17 +205,21 @@ namespace PlayerSystem.Controller
             npc.OnHit(newPos);
         }
         
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RPC_AddMoveList(NpcManager npc)
         {
-            if (!HasInputAuthority) return;
+            if (moveNpcList.Contains(npc)) return;
             moveNpcList.Add(npc);
+            Debug.Log("eklendi");
         }
         
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
         public void RPC_RemoveMoveList(NpcManager npc)
         {
-            if (!HasInputAuthority) return;
+            if (!moveNpcList.Contains(npc)) return;
             moveNpcList.Remove(npc);
             moveNpcList.TrimExcess();
+            Debug.Log("silindi");
         }
         
         public void Reset()

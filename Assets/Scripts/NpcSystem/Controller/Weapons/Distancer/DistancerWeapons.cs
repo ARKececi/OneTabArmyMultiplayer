@@ -73,7 +73,6 @@ namespace BotSystem.Controller
             {
                 timer = Timer;
                 ArrowSpawn();
-                await Task.Yield();
                 bullet.Launch(GrandParent.GetComponent<NpcManager>().Position);
                 bullet = null;
             }
