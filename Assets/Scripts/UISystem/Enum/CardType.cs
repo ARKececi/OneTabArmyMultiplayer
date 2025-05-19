@@ -4,7 +4,7 @@
 public enum CardType
 {
     Archer,
-    SwordMan,
+    Swordman,
     Giant,
     Castle
 }

@@ -117,7 +117,7 @@ namespace PlayerSystem.Controller
         public void RPC_SpawnObject(NPCEnum npcEnum, int lwl)
         {
             // Server'da çalışacak, Runner.Spawn burada çağrılmalı
-            var npc = SpawnController.OnSpawn(transform.position,npcEnum);
+            var npc = SpawnController.OnSpawn(transform.position,npcEnum,lwl);
             if (npc == null) return;
             var botManager = npc.GetComponent<NpcManager>();
             spawnNpc.Add(npc);
@@ -210,7 +210,7 @@ namespace PlayerSystem.Controller
         {
             if (moveNpcList.Contains(npc)) return;
             moveNpcList.Add(npc);
-            Debug.Log("eklendi");
+            
         }
         
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -219,7 +219,7 @@ namespace PlayerSystem.Controller
             if (!moveNpcList.Contains(npc)) return;
             moveNpcList.Remove(npc);
             moveNpcList.TrimExcess();
-            Debug.Log("silindi");
+            
         }
         
         public void Reset()

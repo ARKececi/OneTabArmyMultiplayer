@@ -26,6 +26,7 @@ namespace SpawnSystem
         #region Private Variables
 
         private NPCPrefabData prefabData;
+        [Networked] public int lwl { get; set; }
 
         #endregion
 
@@ -37,13 +38,16 @@ namespace SpawnSystem
         }
 
         
-        public NetworkObject OnSpawn(Vector3 position, NPCEnum eNpcEnum)
+        public NetworkObject OnSpawn(Vector3 position, NPCEnum eNpcEnum, int npclwl)
         {
+            
             if (Runner == null)
             {
                 Debug.LogError("Runner is null");
                 return null;
             }
+
+            lwl = npclwl;
             var npc = Runner.Spawn(
                 prefabData.NPCPrefabs[eNpcEnum],
                 position, Quaternion.identity,
@@ -64,6 +68,7 @@ namespace SpawnSystem
         {
             var manager = networkObject.GetComponent<NpcManager>();
             manager.PlayerColor = PlayerColor;
+            manager.lwl = lwl;
         }
         
         public void Reset()

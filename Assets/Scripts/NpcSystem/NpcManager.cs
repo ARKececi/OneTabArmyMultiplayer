@@ -37,7 +37,7 @@ namespace BotSystem
         [SerializeField] private NavMeshAgent _agent;
         [SerializeField] private AnimationController _animationController;
         [SerializeField] private NPCEnum _me;
-        [SerializeField] private NetworkObject Weapon;
+        [SerializeField] private List<NetworkObject> Weapon;
         [SerializeField] private NpcLevelObject npcSpawnObject;
         
         #endregion
@@ -55,6 +55,7 @@ namespace BotSystem
         [Networked] public bool fight { get; set; }
         [Networked] public bool wait { get; set; }
         [Networked] private float atackField { get; set; }
+        [Networked] public int lwl { get; set; }
 
         #endregion
 
@@ -77,7 +78,8 @@ namespace BotSystem
             SetColor();
             DataSet();
             if (!HasInputAuthority) return;
-            RPC_ItemSpawn(0);
+
+            RPC_ItemSpawn(lwl);
         }
         
 
@@ -125,21 +127,44 @@ namespace BotSystem
             Runner.Despawn(Object);
         }
 
+        public void OnItemSpawn(int lwl)
+        {
+            if (HasStateAuthority)
+                RPC_ItemSpawn(lwl);
+        }
+
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         private void RPC_ItemSpawn(int lwl)
         {
-            
+            if (npcSpawnObject.LwlNpc.Count <= 0)
+            {
+                Debug.Log("lwl içeriği boş");
+                return;
+            }
+            if (Weapon.Count > 0)
+            {
+                foreach (var VARIABLE in Weapon)
+                {
+                    Runner.Despawn(VARIABLE);
+                }       
+                Weapon.Clear();
+            }
             var obj = npcSpawnObject.LwlNpc[lwl].SpawnNpc;
             foreach (var VARIABLE in obj)
             {
                 Parrentobj = VARIABLE.BodySpawnPoint;
-                Weapon = Runner.Spawn(
+                Weapon.Add(Runner.Spawn(
                     VARIABLE.SpawnObject,
                     VARIABLE.SpawnObject.transform.position,
                     VARIABLE.SpawnObject.transform.rotation,
                     inputAuthority: Object.InputAuthority,
-                    OnBeforeUpdate);
+                    OnBeforeUpdate));
             }
+            
+            if (lwl == 0) return;
+            float multiplier = lwl / 10f;
+            healt += (int)(healt * multiplier);
+            damage += (int)(damage * multiplier);
         }
         
         private void OnBeforeUpdate(NetworkRunner runner, NetworkObject networkObject)
