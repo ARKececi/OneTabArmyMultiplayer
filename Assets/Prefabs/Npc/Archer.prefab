@@ -88,6 +88,7 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects:
+  - {fileID: 8819301483479303381}
   - {fileID: 4511465851835630499}
   - {fileID: 5290773608914336886}
   NetworkedBehaviours:
@@ -128,21 +129,33 @@ MonoBehaviour:
   EnemyList: []
   _PlayerColor: {r: 0, g: 0, b: 0, a: 0}
   _Player: {fileID: 0}
+  _Position: {x: 0, y: 0, z: 0}
   _agent: {fileID: 5679885049424070493}
   _animationController: {fileID: 1706454938016409970}
   _me: 1
-  Weapon: {fileID: 0}
+  Weapon:
+  - {fileID: 0}
   npcSpawnObject:
     LwlNpc:
       _items:
-      - Key: 0
+      - Key: 1
         Value:
           SpawnNpc:
           - BodySpawnPoint: {fileID: 4511465851835630499}
             SpawnObject: {fileID: 6722713390411296563, guid: 6b6b8697dc5d190428c14a11f23e767c, type: 3}
+      - Key: 2
+        Value:
+          SpawnNpc:
+          - BodySpawnPoint: {fileID: 4511465851835630499}
+            SpawnObject: {fileID: 6722713390411296563, guid: cb4a0a8c34f6f594aad0b9ae26d8d8b0, type: 3}
+          - BodySpawnPoint: {fileID: 8819301483479303381}
+            SpawnObject: {fileID: -1906929154281639432, guid: ba7be66bf7eb9f44d9abb5fb320e8ba7, type: 3}
+  Hit: {x: 0, y: 0, z: 0}
   _healt: 0
   _attackTime: 0
   _fight: 0
+  _wait: 0
+  _lwl: 0
 --- !u!195 &5679885049424070493
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -579,6 +592,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5536417703713828990}
+  - component: {fileID: 8819301483479303381}
   m_Layer: 0
   m_Name: mixamorig:Spine
   m_TagString: Untagged
@@ -602,6 +616,26 @@ Transform:
   - {fileID: 2807161509205804581}
   m_Father: {fileID: 7538034339477861666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8819301483479303381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900605770335920090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3773607361
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects:
+  - {fileID: 4511465851835630499}
+  - {fileID: 5290773608914336886}
+  NetworkedBehaviours: []
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &2989935395699816550
 GameObject:
   m_ObjectHideFlags: 0

@@ -54,10 +54,10 @@ namespace PlayerSystem.Controller
             GameSignals.Instance.onGame += RPC_OnStart;
         }
 
-        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-        private void RPC_OnStart()
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        private void RPC_OnStart(bool value)
         {
-            start = true;
+            start = value;
         }
 
         private void OnSpawnEnum(CardType npcEnum, int lwl)
@@ -77,7 +77,6 @@ namespace PlayerSystem.Controller
                     lwl = npcLwl;
                 }
             }
-            
         }
 
         public void Awake()
@@ -131,6 +130,7 @@ namespace PlayerSystem.Controller
         /// </summary>
         public void AlignHitdBots(Vector3 spawnPoint, List<NpcManager> bots, int rowCount, float xSpacing, float zSpacing)
         {
+            if (!start) return;
             if (bots == null || bots.Count == 0) return;
             List<NpcManager> list = new List<NpcManager>();
             foreach (var VARIABLE in moveNpcList)

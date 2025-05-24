@@ -26,7 +26,7 @@ namespace SpawnSystem
         #region Private Variables
 
         private NPCPrefabData prefabData;
-        [Networked] public int lwl { get; set; }
+        [Networked] private int lwl { get; set; }
 
         #endregion
 

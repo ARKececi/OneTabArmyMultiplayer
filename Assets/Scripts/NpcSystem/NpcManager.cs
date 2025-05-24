@@ -6,9 +6,11 @@ using BotSystem.Controller;
 using BotSystem.Controller.Weapons;
 using BotSystem.Data.UnityObject;
 using BotSystem.Data.ValueObject;
+using Extentions.GameSystem;
 using Fusion;
 using PlayerSystem;
 using PlayerSystem.Controller;
+using Signals;
 using SpawnSystem.Animation;
 using SpawnSystem.Data.Enum;
 using Unity.VisualScripting;
@@ -25,6 +27,7 @@ namespace BotSystem
         #region Public Variables
 
         public List<NpcManager> EnemyList = new();// hedef manager;
+        public TowerController TowerController;
         [Networked] public Color PlayerColor { get; set; }
         [Networked] public NetworkObject Player{ get; set; }
         [Networked] public Vector3 Position { get; set; }
@@ -56,6 +59,8 @@ namespace BotSystem
         [Networked] public bool wait { get; set; }
         [Networked] private float atackField { get; set; }
         [Networked] public int lwl { get; set; }
+        
+        [Networked] public bool start { set; get; }
 
         #endregion
 
@@ -78,10 +83,16 @@ namespace BotSystem
             SetColor();
             DataSet();
             if (!HasInputAuthority) return;
-
             RPC_ItemSpawn(lwl);
+            GameSignals.Instance.onFinish += RPC_OnStart;
         }
         
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        private void RPC_OnStart(PlayerRef value)
+        {
+            TowerController = null;
+        }
+
 
         public void Update()
         {
@@ -136,6 +147,11 @@ namespace BotSystem
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         private void RPC_ItemSpawn(int lwl)
         {
+            if (npcSpawnObject.LwlNpc.Count < lwl)
+            {
+                lwl = npcSpawnObject.LwlNpc.Count;
+                Debug.Log("max lwl");
+            }
             if (npcSpawnObject.LwlNpc.Count <= 0)
             {
                 Debug.Log("lwl içeriği boş");
@@ -198,14 +214,23 @@ namespace BotSystem
         {
             if (!HasStateAuthority) return;
             if (wait) return;
-            if (EnemyList.Count > 0)
+            if (EnemyList.Count > 0 || TowerController != null)
             { 
-                if (GetClosestTransform(EnemyList,transform.position) == null) return;
-                Position = GetClosestTransform(EnemyList, transform.position).transform.position;
+                if (GetClosestTransform(EnemyList,transform.position) == null && TowerController == null) return;
+                
+                float distance = 0;
+                if (GetClosestTransform(EnemyList,transform.position) != null)
+                {
+                    Position = GetClosestTransform(EnemyList, transform.position).transform.position;
+                    distance = Vector3.Distance(Object.transform.position, GetClosestTransform(EnemyList,transform.position).transform.position);
+                }
+                else if (TowerController != null)
+                {
+                    Position = TowerController.transform.position;
+                    distance = Vector3.Distance(Object.transform.position, Position);
+                }
                 if (!fight)_agent.destination = Position;
                 
-                
-                var distance = Vector3.Distance(Object.transform.position, GetClosestTransform(EnemyList,transform.position).transform.position);
                 if ( _agent.velocity.magnitude > 0.7f || distance > atackField)
                 {
                     if (_agent.velocity.magnitude > 0.7f)
@@ -219,7 +244,6 @@ namespace BotSystem
                 }
                 else
                 {
-                    
                     fight = true;
                     RPC_AnimationControl(AnimationEnum.Fight);
                     _agent.ResetPath();
@@ -252,6 +276,14 @@ namespace BotSystem
             if (EnemyList.Count == 0) Player.GetComponent<MoveAndAligmentController>().RPC_RemoveMoveList(this);
             EnemyList.Add(npcManager);
             _agent.stoppingDistance = atackField;
+        }
+
+        public void AddEnemyBase(TowerController towerController)
+        {
+            if (wait) return;
+            if (towerController != null) Player.GetComponent<MoveAndAligmentController>().RPC_RemoveMoveList(this);
+            _agent.stoppingDistance = atackField;
+            TowerController = towerController;
         }
         
         public void RemoveEnemy(NpcManager npcManager)

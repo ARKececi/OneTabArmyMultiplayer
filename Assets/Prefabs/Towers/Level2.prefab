@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -8031118997613355239}
   - component: {fileID: 3338034006064923929}
   - component: {fileID: 3261288140697696921}
+  - component: {fileID: 1327276182946123661}
   m_Layer: 0
   m_Name: Level2
   m_TagString: Untagged
@@ -86,8 +87,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ea59a807f843a48eb05944ac083014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaterialToApply: {fileID: 0}
-  ColorToApply: {r: 0, g: 0, b: 0, a: 0}
+  _ColorToApply: {r: 0, g: 0, b: 0, a: 0}
+  _healt: 600
+  _Parent: {fileID: 0}
+--- !u!65 &1327276182946123661
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467889287869608215}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &590896849820262809
 GameObject:
   m_ObjectHideFlags: 0

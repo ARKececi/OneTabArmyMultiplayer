@@ -34,12 +34,12 @@ public class CardManager : MonoBehaviour
 
     private void SubscribeEvents()
     {
-        CardSignals.Instance.onNextLevel += OnNextLevel;
+        UISignals.Instance.onNextLevel += OnNextLevel;
     }
 
     private void UnsubscribeEvents()
     {
-        CardSignals.Instance.onNextLevel -= OnNextLevel;
+        UISignals.Instance.onNextLevel -= OnNextLevel;
     }
     
     private void OnDisable()

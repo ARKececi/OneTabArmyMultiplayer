@@ -931,6 +931,8 @@ MonoBehaviour:
           SpawnNpc:
           - BodySpawnPoint: {fileID: 7065110126082165324}
             SpawnObject: {fileID: 8657283444792429194, guid: 269c4425845d3a945b9f0e17b4a40865, type: 3}
+          - BodySpawnPoint: {fileID: 5594332000445794947}
+            SpawnObject: {fileID: 8248074801594733872, guid: 28695f060cd21e34c9d43ed8918607d5, type: 3}
   Hit: {x: 0, y: 0, z: 0}
   _healt: 0
   _attackTime: 0

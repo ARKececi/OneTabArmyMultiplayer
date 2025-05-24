@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Extentions.GameSystem;
 using Fusion;
 using InputSystem.Params;
 using PlayerSystem.Controller;
 using PlayerSystem.Data.UnityObject;
 using PlayerSystem.Data.ValueObject;
+using Signals;
 using SpawnSystem;
 using UnityEngine;
 using Task = System.Threading.Tasks.Task;
@@ -20,6 +22,10 @@ namespace PlayerSystem
         [Networked] public Color PlayerColor { get; set; }
         [Networked] public bool IsReady { get; set; }
         
+        [Networked] public NetworkObject Lose { get; set; }
+        
+        [Networked] public bool Finish { get; set; }
+        
         #endregion
 
         #region Serialized Variables
@@ -28,6 +34,8 @@ namespace PlayerSystem
         [SerializeField] private GameObject _cameraPrefab;
         [SerializeField] private float Timer;
         [SerializeField] private Material _material;
+        [SerializeField]private ScoreController scoreController;
+        [SerializeField] private WinController _winController;
 
         #endregion
 
@@ -45,7 +53,7 @@ namespace PlayerSystem
 
         [Networked] private NetworkObject tower { get; set; }
         private MoveAndAligmentController moveAndAligmentController;
-        [SerializeField]private ScoreController scoreController;
+        
         private float _timer;
 
         #endregion
@@ -54,19 +62,39 @@ namespace PlayerSystem
 
         public override void Spawned()
         {
+            Subscribe();
             if (!HasInputAuthority) return;
             cameraInstance = Instantiate(_cameraPrefab, transform, true);
             scoreController = FindObjectOfType<ScoreController>();
+            _winController = FindObjectOfType<WinController>();
             cameraInstance.transform.localPosition = _camTransform.localPosition;
             cameraInstance.transform.rotation = _camTransform.rotation;
             RPC_TowerObject();
             RPC_SetColor();
-            Subscribe();
+            
         }
 
         private void Subscribe()
         {
             PlayerSignals.Instance.onExp += OnExp;
+            GameSignals.Instance.onFinish += Onfinish;
+        }
+
+        private void Onfinish(PlayerRef playerRef)
+        {
+            RPC_OnFinish(playerRef);
+        }
+        
+        [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+        public void RPC_OnFinish(PlayerRef playerRef)
+        {
+            Debug.Log(HasStateAuthority);
+            Debug.Log(Object.InputAuthority);
+            Debug.Log(playerRef);
+            if(Object.InputAuthority == playerRef)
+                _winController.OnFinal("Lose");
+            else
+                _winController.OnFinal("Win");
         }
 
         private void OnExp(NetworkObject networkObject, int exp)
@@ -94,12 +122,12 @@ namespace PlayerSystem
             Runner.Despawn(_levelList[lwl].Tower);
         }
 
-
         private void OnBeforeUpdate(NetworkRunner runner, NetworkObject networkObject)
         {
             var controller = networkObject.GetComponent<TowerController>();
             controller.ColorToApply = PlayerColor;
             controller.Parent = Object;
+            controller.tag = Object.InputAuthority.ToString();
         }
 
         private void Awake()
@@ -109,7 +137,7 @@ namespace PlayerSystem
         }
         
         public void SetReady()
-        {
+        {   
             RPC_SetReady(true);
         }
         

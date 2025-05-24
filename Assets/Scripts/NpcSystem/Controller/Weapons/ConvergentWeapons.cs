@@ -1,5 +1,6 @@
 ﻿using System;
 using Fusion;
+using PlayerSystem.Controller;
 using UnityEngine;
 
 namespace BotSystem.Controller.Weapons
@@ -31,6 +32,11 @@ namespace BotSystem.Controller.Weapons
             if (other.TryGetComponent<NpcManager>(out var npc))
             {
                 npc.OnSetDamage(Damage);
+            }
+
+            if (other.TryGetComponent<TowerController>(out var towerController))
+            {
+                towerController.OnSetDamage(Damage);
             }
         }
     }

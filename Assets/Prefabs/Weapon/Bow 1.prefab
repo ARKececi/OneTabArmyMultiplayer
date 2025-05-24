@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7874994791873528847
+--- !u!1 &1477723990764382523
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 765064314466067581}
-  - component: {fileID: 7434228570654512041}
-  - component: {fileID: 6262090671055588580}
-  - component: {fileID: -1906929154281639432}
-  - component: {fileID: 7037499599176768027}
+  - component: {fileID: 9095005730639964365}
+  - component: {fileID: 6270391139985686767}
+  - component: {fileID: 6120649290574125514}
+  - component: {fileID: 6722713390411296563}
+  - component: {fileID: 7041367471064684996}
   m_Layer: 0
-  m_Name: Quiver
+  m_Name: Bow 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &765064314466067581
+--- !u!4 &9095005730639964365
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7874994791873528847}
+  m_GameObject: {fileID: 1477723990764382523}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.041, y: 0.093, z: -0.256}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: -2.5243548e-31, z: 2.2461296e-15}
+  m_LocalScale: {x: 2.54, y: 2.54, z: 2.54}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7434228570654512041
+--- !u!33 &6270391139985686767
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7874994791873528847}
-  m_Mesh: {fileID: 7222867714296368907, guid: 4789876290125bd40beda52c01c4a112, type: 3}
---- !u!23 &6262090671055588580
+  m_GameObject: {fileID: 1477723990764382523}
+  m_Mesh: {fileID: 6937701791748013656, guid: 3868ae283de0786488cca8f3d3e6e078, type: 3}
+--- !u!23 &6120649290574125514
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7874994791873528847}
+  m_GameObject: {fileID: 1477723990764382523}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1208850174967370650, guid: 4789876290125bd40beda52c01c4a112, type: 3}
+  - {fileID: 8069297408240405241, guid: 3868ae283de0786488cca8f3d3e6e078, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,37 +85,39 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-1906929154281639432
+--- !u!114 &6722713390411296563
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7874994791873528847}
+  m_GameObject: {fileID: 1477723990764382523}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 850427273
+  SortKey: 632362792
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 7037499599176768027}
+  - {fileID: 7041367471064684996}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &7037499599176768027
+--- !u!114 &7041367471064684996
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7874994791873528847}
+  m_GameObject: {fileID: 1477723990764382523}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1d25bd482142ceaaed627f53e4ded8, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f908de4f78148bdaa3a64d1a61e2655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 0
   _Parent: {fileID: 0}
   _GrandParent: {fileID: 0}
+  Timer: 0
+  _arrow: {fileID: 7201866122491194332, guid: 4adbd507a5260ec4db6e42e5078019ad, type: 3}

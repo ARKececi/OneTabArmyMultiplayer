@@ -1,5 +1,6 @@
 ﻿using System;
 using Fusion;
+using PlayerSystem.Controller;
 using UnityEngine;
 
 namespace BotSystem.Controller
@@ -19,6 +20,10 @@ namespace BotSystem.Controller
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag(_manager.tag)) return;
+            if (other.TryGetComponent<TowerController>(out var tower))
+            {
+                _manager.AddEnemyBase(tower);
+            }
             if (!other.TryGetComponent<NpcManager>(out var npc)) return;
             _manager.AddEnemy(npc);
         }

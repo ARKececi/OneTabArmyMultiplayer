@@ -11,5 +11,6 @@ namespace PlayerSystem
         public UnityAction onGame = delegate{};
         public UnityAction<CardType,int> onSpawnEnum = delegate{};
         public UnityAction<NetworkObject, int> onExp = delegate { };
+        public UnityAction<PlayerRef> onFinish = delegate { };
     }
 }

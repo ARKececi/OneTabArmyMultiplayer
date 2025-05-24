@@ -45,7 +45,7 @@ namespace PlayerSystem.Controller
             if (!(exp >= 10 + 5 * lwl)) return;
             lwl++;
             _lwl.text = lwl.ToString();
-            CardSignals.Instance.onNextLevel?.Invoke();
+            UISignals.Instance.onNextLevel?.Invoke();
             exp = 0;
         }
     }

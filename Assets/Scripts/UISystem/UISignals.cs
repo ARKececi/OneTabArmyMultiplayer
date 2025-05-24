@@ -4,8 +4,9 @@ using UnityEngine.Events;
 
 namespace Signals
 {
-    public class CardSignals : MonoSingleton<CardSignals>
+    public class UISignals : MonoSingleton<UISignals>
     {
         public UnityAction onNextLevel = delegate { };
+        public UnityAction<string> onFinal = delegate { };
     }
 }
