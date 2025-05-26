@@ -93,6 +93,7 @@ namespace PhotonSystem.States
         public async void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
             await LoadSceneAsync();
+            _panel.OpenPanel(PanelType.MainMenu);
         }
         public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
         public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }

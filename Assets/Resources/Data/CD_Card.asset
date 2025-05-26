@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CD_Card
   m_EditorClassIdentifier: 
   CardData:
-    m_Keys: 0000000001000000
+    m_Keys: 000000000100000003000000
     m_Values:
     - List:
       - {fileID: 941076299439852964, guid: 16b8e5f885de59c4ba5d08d7a7d3f719, type: 3}
@@ -27,3 +27,8 @@ MonoBehaviour:
       - {fileID: 6755084596321444533, guid: a4f07211e9bdaa84a93d3cec0aaf0c63, type: 3}
       - {fileID: 1355708846478018415, guid: 01c1862db0000a749849b593c60146eb, type: 3}
       - {fileID: 6846747801892494039, guid: d465f3af24711184b94b7a1f2d04d8bc, type: 3}
+    - List:
+      - {fileID: 8959840898957150850, guid: e2b26f215963f74438a3aca9c2874679, type: 3}
+      - {fileID: 6279921627405276286, guid: 88b8f3106c30fa04ca086316662fd280, type: 3}
+      - {fileID: 7202593233097343667, guid: 10e317fa63345674890d9ee65f4096d7, type: 3}
+      - {fileID: 3216515372962103234, guid: c383a8d5fabba0448adfbbabf7ce2e26, type: 3}

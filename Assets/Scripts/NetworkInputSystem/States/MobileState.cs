@@ -1,6 +1,8 @@
-﻿using InputSystem.Enum;
+﻿using System.Collections.Generic;
+using InputSystem.Enum;
 using InputSystem.Params;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace InputSystem.States
 {
@@ -52,7 +54,6 @@ namespace InputSystem.States
                     else
                     {
                         // Eğer Plane'e çarpmadıysa input geçersiz say
-                        Debug.Log("Plane'e tıklanmadı, input iptal.");
                     }
                     break;
             }
@@ -76,5 +77,7 @@ namespace InputSystem.States
                 falseInput = true;
             }
         }
+        
+
     }
 }

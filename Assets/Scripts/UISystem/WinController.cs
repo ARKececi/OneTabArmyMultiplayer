@@ -1,4 +1,5 @@
 ﻿using System;
+using PlayerSystem;
 using UnityEngine;
 
 namespace Signals
@@ -10,6 +11,7 @@ namespace Signals
         #region Serialized Variables
 
         [SerializeField] private SerializedDictionary<string, GameObject> finalPanel;
+        [SerializeField] private GameObject _disconnect;
 
         #endregion
 
@@ -28,6 +30,11 @@ namespace Signals
         public void OnFinal(string final)
         {
             finalPanel[final].SetActive(true);
+        }
+
+        public void Disconnect()
+        {
+            PlayerSignals.Instance.onDisconnect?.Invoke();
         }
     }
 }

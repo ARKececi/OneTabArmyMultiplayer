@@ -5,9 +5,9 @@ using Data.ValueObject;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using Extentions.GameSystem;
 using PlayerSystem;
 using Signals;
+using Task = System.Threading.Tasks.Task;
 
 public class CardManager : MonoBehaviour
 {
@@ -133,12 +133,13 @@ public class CardManager : MonoBehaviour
         List<GameObject> selectedCards = new List<GameObject>();
         while (selectedCards.Count < count && availableTypes.Count > 0)
         {
-            int randcount = availableTypes.Count;
+            
             if (firsPlay)
             {
-                randcount--;
+                availableTypes.Remove(CardType.Castle);
                 firsPlay = false;
             }
+            int randcount = availableTypes.Count;
             int randomIndex = UnityEngine.Random.Range(0, randcount);
             CardType selectedType = availableTypes[randomIndex];
 
@@ -155,8 +156,9 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// Kullanıcı bir kart seçtiğinde çağrılır, kartın seviyesini artırır ve seçim ekranını kapatır
     /// </summary>
-    private void SelectCard(CardType selectedType)
+    private async void SelectCard(CardType selectedType)
     {
+        await Task.Delay(100);
         cardLevels[selectedType]++; // Kartın seviyesini artır
         cardPanel.SetActive(false); // Kart seçim ekranını kapat
         PlayerSignals.Instance.onSpawnEnum?.Invoke(selectedType,cardLevels[selectedType]);

@@ -6,6 +6,7 @@ using InputSystem.Enum;
 using InputSystem.Params;
 using InputSystem.States;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 namespace InputSystem
@@ -17,7 +18,8 @@ namespace InputSystem
         #region Public Variables
 
         public NetInput Input;
-        [FormerlySerializedAs("planeLayerMask")] public LayerMask PlaneLayerMask;
+        public LayerMask PlaneLayerMask;
+        public NetworkRunner Runner;
 
         #endregion
 
@@ -61,6 +63,7 @@ namespace InputSystem
             anyState                  = new AnyState();     
             curretnBaseState          = anyState;
             SwichState(_selectedState);
+
         }
 
         public void Update()

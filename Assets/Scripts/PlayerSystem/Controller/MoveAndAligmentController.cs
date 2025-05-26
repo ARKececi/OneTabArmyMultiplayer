@@ -6,12 +6,19 @@ using Fusion;
 using SpawnSystem;
 using SpawnSystem.Data.Enum;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayerSystem.Controller
 {
     public class MoveAndAligmentController : NetworkBehaviour
     {
         #region Self Variables
+
+        #region Public Variables
+
+        
+
+        #endregion
 
         #region SerializeField Variables
 
@@ -40,6 +47,7 @@ namespace PlayerSystem.Controller
         private void TimerClass()
         {
             if (!start) return;
+            RPC_ShowSlider();
             _timer -= Runner.DeltaTime;
             if (_timer <= 0)
             {
@@ -52,6 +60,11 @@ namespace PlayerSystem.Controller
         {
             PlayerSignals.Instance.onSpawnEnum += OnSpawnEnum;
             GameSignals.Instance.onGame += RPC_OnStart;
+        }
+        
+        private void RPC_ShowSlider()
+        {
+            PlayerSignals.Instance.SpawnBar?.Invoke(Object.InputAuthority, _timer, Timer);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -69,6 +82,7 @@ namespace PlayerSystem.Controller
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         private void RPC_OnSpawnEnum(CardType npcEnum, int npcLwl)
         {
+            if(npcEnum == CardType.Castle) return;
             foreach (NPCEnum VARIABLE in Enum.GetValues(typeof(NPCEnum)))
             {
                 if (VARIABLE.ToString() == npcEnum.ToString())
