@@ -12,6 +12,7 @@ namespace Signals
 
         [SerializeField] private SerializedDictionary<string, GameObject> finalPanel;
         [SerializeField] private GameObject _disconnect;
+        [SerializeField] private GameObject _ready;
 
         #endregion
 
@@ -25,6 +26,7 @@ namespace Signals
         private void Subscribe()
         {
             UISignals.Instance.onFinal += OnFinal;
+            UISignals.Instance.onReadyActive += OnReadyActive;
         }
 
         public void OnFinal(string final)
@@ -35,6 +37,16 @@ namespace Signals
         public void Disconnect()
         {
             PlayerSignals.Instance.onDisconnect?.Invoke();
+        }
+
+        public void OnReadyActive(bool ready)
+        {
+            _ready.SetActive(ready);
+        }
+
+        public void OnReady()
+        {
+            PlayerSignals.Instance.onSetReady?.Invoke();
         }
     }
 }

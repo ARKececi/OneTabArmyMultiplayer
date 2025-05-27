@@ -8,5 +8,6 @@ namespace Signals
     {
         public UnityAction onNextLevel = delegate { };
         public UnityAction<string> onFinal = delegate { };
+        public UnityAction<bool> onReadyActive = delegate { };
     }
 }

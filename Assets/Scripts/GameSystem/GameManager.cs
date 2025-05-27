@@ -2,6 +2,7 @@
 using Fusion;
 using PlayerSystem;
 using PlayerSystem.Controller;
+using Signals;
 using UnityEngine;
 
 namespace Extentions.GameSystem
@@ -25,10 +26,11 @@ namespace Extentions.GameSystem
 
         private void Subscribe()
         {
-            GameSignals.Instance.CheckAllPlayersReady += CheckAllPlayersReady;
+            GameSignals.Instance.CheckAllPlayersReady += RPC_CheckAllPlayersReady;
         }
 
-        public void CheckAllPlayersReady()
+        [Rpc(RpcSources.All, RpcTargets.All)]
+        public void RPC_CheckAllPlayersReady()
         {
             var players = FindObjectsOfType<PlayerManager>();
             if (players.Length < 2) return;
@@ -36,7 +38,7 @@ namespace Extentions.GameSystem
             {
                 return;
             }
-            
+            UISignals.Instance.onReadyActive?.Invoke(false);
             RPC_StartGame();
         }
 
@@ -44,8 +46,13 @@ namespace Extentions.GameSystem
         private void RPC_StartGame()
         {
             Debug.Log("Tüm oyuncular hazır. Oyun başlatılıyor...");
-            var players = FindObjectsOfType<MoveAndAligmentController>();
-            foreach (var player in players)
+            var SpawnControl = FindObjectsOfType<MoveAndAligmentController>();
+            var players = FindObjectsOfType<PlayerManager>();
+            foreach (var VARIABLE in players)
+            {
+                VARIABLE.RPC_OnSetactive();
+            }
+            foreach (var player in SpawnControl)
             {
                 player.start = true;
             }

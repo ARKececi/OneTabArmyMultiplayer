@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Extentions.GameSystem;
 using Fusion;
 using TMPro;
@@ -18,6 +19,8 @@ namespace PlayerSystem.Controller
         [Networked] public int healt { get; set; }
         [Networked] public NetworkObject Parent { set; get; }
         [Networked] public Vector3 CamTransform { get; set; }
+        
+        public bool Spawn { get; set; }
 
         #endregion
 
@@ -53,7 +56,8 @@ namespace PlayerSystem.Controller
             {
                 VARIABLE.material.color = ColorToApply;
             }
-            Object.transform.SetParent(Parent.transform);
+            transform.SetParent(Parent.transform);
+            transform.localPosition = Vector3.zero;
             _healtText.text = healt.ToString();
             maxHealt = healt;
 
@@ -62,14 +66,20 @@ namespace PlayerSystem.Controller
 
         private void Subscribe()
         {
-            PlayerSignals.Instance.SpawnBar += RPC_SpawnSlider;
+            PlayerSignals.Instance.SpawnBar += SpawnSlider;
         }
+
+        private void SpawnSlider(PlayerRef arg0, float arg1, float arg2)
+        { 
+            if(Object != null) RPC_SpawnSlider(arg0, arg1, arg2);
+        }
+        
 
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         private void RPC_SpawnSlider(PlayerRef playerRef,float timer, float maxTimer)
         {
             if(Object.InputAuthority != playerRef) return;
-            SpawnBar.fillAmount = Mathf.Clamp01( timer / maxTimer);
+            SpawnBar.fillAmount = 1 - Mathf.Clamp01( timer / maxTimer);
         }
         
         public void OnSetDamage(int damage)

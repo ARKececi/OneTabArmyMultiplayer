@@ -79,10 +79,12 @@ namespace PlayerSystem
             GameSignals.Instance.onFinish += Onfinish;
             PlayerSignals.Instance.onDisconnect += OnDisconnect;
             PlayerSignals.Instance.onSpawnEnum += TowerObject;
+            PlayerSignals.Instance.onSetReady += SetReady;
         }
 
         private void OnDisconnect()
         {
+            if(HasInputAuthority)
                 Runner.Shutdown();
         }
 
@@ -134,7 +136,7 @@ namespace PlayerSystem
             }
             tower = Runner.Spawn(
                 _levelList[lwl].Tower,
-                transform.position,
+                Vector3.zero,
                 transform.rotation,
                 Object.InputAuthority,
                 OnBeforeUpdate);
@@ -157,10 +159,16 @@ namespace PlayerSystem
             _levelList = Resources.Load<SO_TowerLwlData>("Data/SO_TowerLwlData").lwls;
         }
         
+        [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+        public void RPC_OnSetactive()
+        {
+            Debug.Log(Object.InputAuthority);
+            _button.SetActive(false);
+        }
+        
         public void SetReady()
         {   
-            RPC_SetReady(true);
-            _button.SetActive(false);
+            if(HasInputAuthority) RPC_SetReady(true);
         }
         
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

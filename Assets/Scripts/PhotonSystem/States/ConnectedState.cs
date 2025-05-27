@@ -21,15 +21,17 @@ namespace PhotonSystem.States
         
         private NetworkRunner _runner;
         private PanelManager.PanelManager _panel;
+        private PhotonManager _photonManager;
 
         #endregion
         
         #endregion
         public void EnterState(PhotonManager photonManager)
         {
-            
+            _photonManager = photonManager;
             _runner = photonManager.ActiveRunner;
             _panel = photonManager.Panel;
+            
             Connection();
         }
 
@@ -93,7 +95,7 @@ namespace PhotonSystem.States
         public async void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
             await LoadSceneAsync();
-            _panel.OpenPanel(PanelType.MainMenu);
+            _photonManager.OnMainMenuButton();
         }
         public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
         public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }

@@ -40,6 +40,8 @@ namespace PlayerSystem.Controller
         private SpawnController SpawnController;
         [Networked] public bool start { set; get; }
         
+        [Networked] public bool Tower { get; set; }
+        
         #endregion
 
         #endregion
@@ -60,6 +62,12 @@ namespace PlayerSystem.Controller
         {
             PlayerSignals.Instance.onSpawnEnum += OnSpawnEnum;
             GameSignals.Instance.onGame += RPC_OnStart;
+            PlayerSignals.Instance.onTower += RPC_OnTower;
+        }
+
+        private void RPC_OnTower(bool value)
+        {
+            Tower = value;
         }
         
         private void RPC_ShowSlider()
