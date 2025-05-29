@@ -43,6 +43,7 @@ namespace PhotonSystem.States
         
         public void EnterState(PhotonManager photonManager)
         {
+            Reset();
             _createLobyName = photonManager.Data.CreateLobyName;
             _createLobyMaxPlayer = photonManager.Data.CreateLobyMaxPlayer;
             _passwordToggle = photonManager.Data.PasswordToggle;
@@ -61,7 +62,7 @@ namespace PhotonSystem.States
             
         }
         
-        private Task Reset()
+        private void Reset()
         {
             _createButton.onClick.RemoveListener(CreateGame);
             _passwordToggle.onValueChanged.RemoveListener(OnToggleChanged);
@@ -76,8 +77,6 @@ namespace PhotonSystem.States
                 _runner = null;
                 Debug.Log("[Fusion] Runner temizlendi.");
             }
-
-            return Task.CompletedTask;
         }
 
         private void OnToggleChanged(bool arg0)
@@ -243,9 +242,9 @@ namespace PhotonSystem.States
         }
 
 
-        public async void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
-            await Reset();
+            Reset();
         }
         public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }

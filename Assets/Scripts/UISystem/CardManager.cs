@@ -87,9 +87,11 @@ public class CardManager : MonoBehaviour
     /// </summary>
     public void ShowCardSelection()
     {
-        cardPanel.SetActive(true); // Kart panelini aç
+        
         List<GameObject> selectedCards = GetRandomUniqueCards(3); // 3 farklı türden kart seç
         // Önceki kartları temizle
+        if(selectedCards == null) return;
+        cardPanel.SetActive(true); // Kart panelini aç
         foreach (Transform child in cardHolder)
         {
             Destroy(child.gameObject);
@@ -134,11 +136,19 @@ public class CardManager : MonoBehaviour
         while (selectedCards.Count < count && availableTypes.Count > 0)
         {
             
-            if (firsPlay)
+            if (firsPlay || cardLevels[CardType.Castle] == 4)
             {
                 availableTypes.Remove(CardType.Castle);
                 firsPlay = false;
             }
+
+            foreach (var VARIABLE in cardLevels.Keys)
+            {
+                if (cardLevels[VARIABLE] == 5)
+                    availableTypes.Remove(VARIABLE);
+            }
+
+            if (availableTypes.Count <= 0) return null;
             int randcount = availableTypes.Count;
             int randomIndex = UnityEngine.Random.Range(0, randcount);
             CardType selectedType = availableTypes[randomIndex];
