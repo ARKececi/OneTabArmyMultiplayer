@@ -43,6 +43,8 @@ namespace PlayerSystem.Controller
         [Networked] public bool start { set; get; }
         
         [Networked] public bool Tower { get; set; }
+
+        private bool full;
         
         #endregion
 
@@ -103,6 +105,7 @@ namespace PlayerSystem.Controller
         
         private void RPC_ShowSlider()
         {
+            if(full) return;
             PlayerSignals.Instance.SpawnBar?.Invoke(Object.InputAuthority, _timer, Timer);
         }
 
@@ -172,7 +175,15 @@ namespace PlayerSystem.Controller
         public void RPC_SpawnObject(NPCEnum npcEnum, int lwl)
         {
             // Server'da çalışacak, Runner.Spawn burada çağrılmalı
-            if(AcitveNpc() >= 30) return;
+            if (AcitveNpc() >= 30)
+            {
+                full = true;
+                return;
+            }
+            else
+            {
+                full = false;
+            }
             var npc = SpawnController.OnSpawn(transform.position,npcEnum,lwl);
             if (npc == null) return;
             var botManager = npc.GetComponent<NpcManager>();
