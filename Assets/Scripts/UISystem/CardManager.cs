@@ -171,7 +171,7 @@ public class CardManager : MonoBehaviour
         await Task.Delay(100);
         cardLevels[selectedType]++; // Kartın seviyesini artır
         cardPanel.SetActive(false); // Kart seçim ekranını kapat
-        PlayerSignals.Instance.onSpawnEnum?.Invoke(selectedType,cardLevels[selectedType]);
+        UISignals.Instance.onSpawnCard?.Invoke(selectedType,cardLevels[selectedType]); // kontrol 000.1111
         FadeFromLightBlack();
         FadeFromDarkBlack();
         isCardSelectionActive = true;

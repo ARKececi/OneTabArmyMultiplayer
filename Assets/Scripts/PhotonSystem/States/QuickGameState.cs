@@ -95,6 +95,7 @@ namespace PhotonSystem.States
             if (sessionList.Count == 0)
             {
                 Debug.LogWarning("[Fusion] Açık oturum yok.");
+                _photonManager.OnMainMenuButton();
                 return;
             }
             _sessionList = new List<SessionInfo>(sessionList);

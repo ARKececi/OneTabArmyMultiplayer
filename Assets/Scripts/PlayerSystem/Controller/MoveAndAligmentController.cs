@@ -84,6 +84,7 @@ namespace PlayerSystem.Controller
         private void OnSpawnEnum(CardType npcEnum, int lwl)
         {
             if (!HasInputAuthority) return;
+            Debug.Log(npcEnum + lwl);
             RPC_OnSpawnEnum(npcEnum,lwl);
         }
         

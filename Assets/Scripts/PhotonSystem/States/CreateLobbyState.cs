@@ -43,7 +43,7 @@ namespace PhotonSystem.States
         
         public void EnterState(PhotonManager photonManager)
         {
-            Reset();
+            
             _createLobyName = photonManager.Data.CreateLobyName;
             _createLobyMaxPlayer = photonManager.Data.CreateLobyMaxPlayer;
             _passwordToggle = photonManager.Data.PasswordToggle;
