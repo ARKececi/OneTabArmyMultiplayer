@@ -6,7 +6,6 @@ using Fusion;
 using SpawnSystem;
 using SpawnSystem.Data.Enum;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace PlayerSystem.Controller
 {
@@ -29,9 +28,12 @@ namespace PlayerSystem.Controller
 
         #region Private Variables
 
-        [SerializeField] private List<NpcManager> moveNpcList = new List<NpcManager>();
-        [SerializeField] private List<NpcManager> spawnNpcList = new List<NpcManager>();
-        [Networked] public NPCEnum _npc { get; set; }
+        [SerializeField] private List<NpcManager> allSpawnNpcList = new List<NpcManager>();
+
+        [SerializeField] private SerializableDictionary<NPCEnum,List<NpcManager>> moveNpcList = new SerializableDictionary<NPCEnum,List<NpcManager>>();
+        [SerializeField] private SerializableDictionary<NPCEnum,List<NpcManager>> spawnNpcList = new SerializableDictionary<NPCEnum,List<NpcManager>>();
+        [Networked] public NPCEnum SpawnNpc { get; set; }
+        [Networked] public NPCEnum MoveNpc { get; set; }
         [Networked] private int lwl { get; set; }
         
         private List<NetworkObject> spawnNpc = new();
@@ -45,7 +47,16 @@ namespace PlayerSystem.Controller
         #endregion
 
         #endregion
-        
+
+        private void Start()
+        {
+            foreach (NPCEnum VARIABLE in Enum.GetValues(typeof(NPCEnum)))
+            {
+                moveNpcList.Add(VARIABLE,new List<NpcManager>());
+                spawnNpcList.Add(VARIABLE,new List<NpcManager>());
+            }
+        }
+
         private void TimerClass()
         {
             if (!start) return;
@@ -53,7 +64,7 @@ namespace PlayerSystem.Controller
             _timer -= Runner.DeltaTime;
             if (_timer <= 0)
             {
-                RPC_SpawnObject(_npc,lwl);
+                RPC_SpawnObject(SpawnNpc,lwl);
                 _timer = Timer;
             }
         }
@@ -63,6 +74,26 @@ namespace PlayerSystem.Controller
             PlayerSignals.Instance.onSpawnEnum += OnSpawnEnum;
             GameSignals.Instance.onGame += RPC_OnStart;
             PlayerSignals.Instance.onTower += RPC_OnTower;
+            PlayerSignals.Instance.onMoveEnum += OnMoveEnum;
+        }
+
+        private void OnMoveEnum(CardType cardType)
+        {
+            if(!HasInputAuthority) return;
+            RPC_MoveEnum(cardType);
+        }
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        private void RPC_MoveEnum(CardType cardType)
+        {
+            if(cardType == CardType.Castle) return;
+            foreach (NPCEnum VARIABLE in Enum.GetValues(typeof(NPCEnum)))
+            {
+                if (VARIABLE.ToString() == cardType.ToString())
+                {
+                    MoveNpc = VARIABLE;
+                }
+            }
         }
 
         private void RPC_OnTower(bool value)
@@ -96,7 +127,7 @@ namespace PlayerSystem.Controller
             {
                 if (VARIABLE.ToString() == npcEnum.ToString())
                 {
-                    _npc = VARIABLE;
+                    SpawnNpc = VARIABLE;
                     lwl = npcLwl;
                 }
             }
@@ -123,27 +154,30 @@ namespace PlayerSystem.Controller
                 Debug.LogError("Runner is null, cannot spawn.");
                 return;
             }
-
-            foreach (var VARIABLE in spawnNpcList)
-            {
-                moveNpcList.Add(VARIABLE);
-            }
-            if(spawnNpcList.Count > 0) spawnNpcList.Clear();
             
-            moveNpcList.TrimExcess();
-            spawnNpcList.TrimExcess();
+            foreach (var VARIABLE in spawnNpcList[MoveNpc])
+            {
+                if (VARIABLE == null) return;
+                moveNpcList[MoveNpc].Add(VARIABLE);
+                allSpawnNpcList[allSpawnNpcList.IndexOf(VARIABLE)] = null;
+            }
+            if(spawnNpcList[MoveNpc].Count > 0) spawnNpcList[MoveNpc].Clear();
+            
+            moveNpcList[MoveNpc].TrimExcess();
+            spawnNpcList[MoveNpc].TrimExcess();
 
-            AlignHitdBots(move, moveNpcList, 7, 1f, 1f);
+            AlignHitdBots(move, moveNpcList[MoveNpc], 7, 1f, 1f);
         }
         
         public void RPC_SpawnObject(NPCEnum npcEnum, int lwl)
         {
             // Server'da çalışacak, Runner.Spawn burada çağrılmalı
+            if(AcitveNpc() >= 30) return;
             var npc = SpawnController.OnSpawn(transform.position,npcEnum,lwl);
             if (npc == null) return;
             var botManager = npc.GetComponent<NpcManager>();
             spawnNpc.Add(npc);
-            AlignSpawnedBots(botManager, 7, 1f,1f);
+            AlignSpawnedBots(botManager, npcEnum , 7, 1f,1f);
         }
         
         #region Move Positioning
@@ -156,7 +190,7 @@ namespace PlayerSystem.Controller
             if (!start) return;
             if (bots == null || bots.Count == 0) return;
             List<NpcManager> list = new List<NpcManager>();
-            foreach (var VARIABLE in moveNpcList)
+            foreach (var VARIABLE in moveNpcList[MoveNpc])
             {
                 if (VARIABLE == null)
                     list.Add(VARIABLE);
@@ -164,7 +198,7 @@ namespace PlayerSystem.Controller
 
             foreach (var VARIABLE in list)
             {
-                RPC_RemoveMoveList(VARIABLE);
+                RPC_RemoveMoveList(VARIABLE,MoveNpc);
             }
 
             int columnTotal = Mathf.CeilToInt((float)bots.Count / rowCount); // Kaç sütun olacağını belirle
@@ -199,7 +233,7 @@ namespace PlayerSystem.Controller
         /// <summary>
         /// Spawn edilen botları _alignment objesi etrafında hizalar.
         /// </summary>
-        public void AlignSpawnedBots(NpcManager npc, int rowCount, float xSpacing, float zSpacing)
+        public void AlignSpawnedBots(NpcManager npc, NPCEnum npcEnum, int rowCount, float xSpacing, float zSpacing)
         {
             if (_aligment == null)
             {
@@ -207,9 +241,27 @@ namespace PlayerSystem.Controller
                 return;
             }
 
-            spawnNpcList.Add(npc); // Yeni botu listeye ekle
+            int index = 0;
+            bool ok = false;
+            foreach (var VARIABLE in allSpawnNpcList)
+            {
+                if (VARIABLE == null)
+                {
+                    index = allSpawnNpcList.IndexOf(VARIABLE);
+                    allSpawnNpcList[index] = npc;
+                    ok = true;
+                    break;
+                }
+            }
+            if (!ok)
+            {
+                allSpawnNpcList.Add(npc);
+                index = allSpawnNpcList.Count - 1;
+            }
 
-            int botIndex = spawnNpcList.Count - 1; // Yeni eklenen botun indexi
+            spawnNpcList[npcEnum].Add(npc); // Yeni botu listeye ekle
+            int botIndex = index; // Yeni eklenen botun indexi
+            
             int row = botIndex / rowCount; // Kaçıncı satırda olduğunu bul
             int col = botIndex % rowCount; // Kaçıncı sütunda olduğunu bul
 
@@ -229,20 +281,38 @@ namespace PlayerSystem.Controller
         }
         
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void RPC_AddMoveList(NpcManager npc)
+        public void RPC_AddMoveList(NpcManager npc, NPCEnum npcEnum)
         {
-            if (moveNpcList.Contains(npc)) return;
-            moveNpcList.Add(npc);
+            if (moveNpcList[npcEnum].Contains(npc)) return;
+            moveNpcList[npcEnum].Add(npc);
             
         }
         
         [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-        public void RPC_RemoveMoveList(NpcManager npc)
+        public void RPC_RemoveMoveList(NpcManager npc, NPCEnum npcEnum)
         {
-            if (!moveNpcList.Contains(npc)) return;
-            moveNpcList.Remove(npc);
-            moveNpcList.TrimExcess();
+            if (!moveNpcList[npcEnum].Contains(npc)) return;
+            moveNpcList[npcEnum].Remove(npc);
+            moveNpcList[npcEnum].TrimExcess();
             
+        }
+
+        private int AcitveNpc()
+        {
+            var list = new List<NetworkObject>();
+            foreach (var VARIABLE in spawnNpc)
+            {
+                if (VARIABLE == null)
+                {
+                    list.Add(VARIABLE);
+                }
+            }
+            foreach (var VARIABLE in list)
+            {
+                spawnNpc.Remove(VARIABLE);
+            }
+            spawnNpc.TrimExcess();
+            return spawnNpc.Count;
         }
         
         public void Reset()

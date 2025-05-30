@@ -273,7 +273,7 @@ namespace BotSystem
         public void AddEnemy(NpcManager npcManager)
         {
             if (wait) return;
-            if (EnemyList.Count == 0) Player.GetComponent<MoveAndAligmentController>().RPC_RemoveMoveList(this);
+            if (EnemyList.Count == 0) Player.GetComponent<MoveAndAligmentController>().RPC_RemoveMoveList(this,_me);
             EnemyList.Add(npcManager);
             _agent.stoppingDistance = atackField;
         }
@@ -281,7 +281,7 @@ namespace BotSystem
         public void AddEnemyBase(TowerController towerController)
         {
             if (wait) return;
-            if (towerController != null) Player.GetComponent<MoveAndAligmentController>().RPC_RemoveMoveList(this);
+            if (towerController != null) Player.GetComponent<MoveAndAligmentController>().RPC_RemoveMoveList(this,_me);
             _agent.stoppingDistance = atackField;
             TowerController = towerController;
         }
@@ -337,7 +337,7 @@ namespace BotSystem
 
             if (closest == null)
             {
-                Player.GetComponent<MoveAndAligmentController>().RPC_AddMoveList(this);
+                Player.GetComponent<MoveAndAligmentController>().RPC_AddMoveList(this,_me);
                 _agent.stoppingDistance = 0;
             }
             return closest;

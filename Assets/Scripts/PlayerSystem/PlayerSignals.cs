@@ -7,6 +7,7 @@ namespace PlayerSystem
     public class PlayerSignals : MonoSingleton<PlayerSignals>
     {
         public UnityAction<CardType,int> onSpawnEnum = delegate{};
+        public UnityAction<CardType> onMoveEnum = delegate { };
         public UnityAction<NetworkObject, int> onExp = delegate { };
         public UnityAction onDisconnect = delegate { };
         public UnityAction<PlayerRef, float, float> SpawnBar = delegate { };
