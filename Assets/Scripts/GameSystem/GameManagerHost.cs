@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Extentions.GameSystem
 {
-    public class GameManager : NetworkBehaviour
+    public class GameManagerHost : NetworkBehaviour
     {
         #region Self Variables
 
@@ -22,6 +22,7 @@ namespace Extentions.GameSystem
         public override void Spawned()
         {
             Subscribe();
+            
         }
 
         private void Subscribe()

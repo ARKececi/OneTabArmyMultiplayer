@@ -130,6 +130,7 @@ namespace PlayerSystem.Controller
             {
                 if (VARIABLE.ToString() == npcEnum.ToString())
                 {
+                    Debug.Log(VARIABLE);
                     SpawnNpc = VARIABLE;
                     lwl = npcLwl;
                 }

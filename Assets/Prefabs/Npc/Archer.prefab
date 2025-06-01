@@ -88,9 +88,8 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects:
-  - {fileID: 8819301483479303381}
-  - {fileID: 4511465851835630499}
-  - {fileID: 5290773608914336886}
+  - {fileID: 6542369420559854483}
+  - {fileID: 8512028447149645910}
   NetworkedBehaviours:
   - {fileID: 2375261029525296264}
   - {fileID: 4510591307362273615}
@@ -127,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyList: []
+  TowerController: {fileID: 0}
   _PlayerColor: {r: 0, g: 0, b: 0, a: 0}
   _Player: {fileID: 0}
   _Position: {x: 0, y: 0, z: 0}
@@ -141,21 +141,25 @@ MonoBehaviour:
       - Key: 1
         Value:
           SpawnNpc:
-          - BodySpawnPoint: {fileID: 4511465851835630499}
+          - BodySpawnPoint: {fileID: 6542369420559854483}
             SpawnObject: {fileID: 6722713390411296563, guid: 6b6b8697dc5d190428c14a11f23e767c, type: 3}
       - Key: 2
         Value:
           SpawnNpc:
-          - BodySpawnPoint: {fileID: 4511465851835630499}
+          - BodySpawnPoint: {fileID: 6542369420559854483}
             SpawnObject: {fileID: 6722713390411296563, guid: cb4a0a8c34f6f594aad0b9ae26d8d8b0, type: 3}
-          - BodySpawnPoint: {fileID: 8819301483479303381}
+          - BodySpawnPoint: {fileID: 8512028447149645910}
             SpawnObject: {fileID: -1906929154281639432, guid: ba7be66bf7eb9f44d9abb5fb320e8ba7, type: 3}
+  multi:
+    m_Keys: 0100000002000000030000000400000005000000
+    m_Values: 0a000000140000001e0000003200000032000000
   Hit: {x: 0, y: 0, z: 0}
   _healt: 0
   _attackTime: 0
   _fight: 0
   _wait: 0
   _lwl: 0
+  _start: 0
 --- !u!195 &5679885049424070493
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -345,7 +349,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7919101929210259810}
-  - component: {fileID: 5290773608914336886}
   m_Layer: 0
   m_Name: mixamorig:RightHandIndex3
   m_TagString: Untagged
@@ -368,24 +371,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2013861987541204085}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5290773608914336886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1410060296352696658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 852602690
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours: []
-  ForceRemoteRenderTimeframe: 0
 --- !u!1 &1515918361171943245
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,7 +577,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5536417703713828990}
-  - component: {fileID: 8819301483479303381}
   m_Layer: 0
   m_Name: mixamorig:Spine
   m_TagString: Untagged
@@ -614,28 +598,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2807161509205804581}
+  - {fileID: 4654017793671512658}
   m_Father: {fileID: 7538034339477861666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8819301483479303381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900605770335920090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 3773607361
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects:
-  - {fileID: 4511465851835630499}
-  - {fileID: 5290773608914336886}
-  NetworkedBehaviours: []
-  ForceRemoteRenderTimeframe: 0
 --- !u!1 &2989935395699816550
 GameObject:
   m_ObjectHideFlags: 0
@@ -790,6 +755,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1208830660592401132}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3373482680070850170
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6653026282846379545}
+  - component: {fileID: 6542369420559854483}
+  m_Layer: 0
+  m_Name: Bow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6653026282846379545
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373482680070850170}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.36242992, y: -0.47547695, z: -0.71933043, w: 0.3537371}
+  m_LocalPosition: {x: 0.020992097, y: -0.07199704, z: 0.019998625}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3875347960309866565}
+  m_LocalEulerAnglesHint: {x: -25.318, y: -71.613, z: -109.22}
+--- !u!114 &6542369420559854483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373482680070850170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2115790494
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours: []
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &3556213180283321029
 GameObject:
   m_ObjectHideFlags: 0
@@ -1081,7 +1096,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3875347960309866565}
-  - component: {fileID: 4511465851835630499}
   m_Layer: 0
   m_Name: mixamorig:LeftHandIndex3
   m_TagString: Untagged
@@ -1101,27 +1115,10 @@ Transform:
   m_LocalPosition: {x: -0.045005344, y: 0.022305183, z: 0.0038070118}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6653026282846379545}
   m_Father: {fileID: 3169717808211053998}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4511465851835630499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4891153806441209412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 1238943922
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours: []
-  ForceRemoteRenderTimeframe: 0
 --- !u!1 &4912192377871195621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1156,6 +1153,56 @@ Transform:
   - {fileID: 1943950938510487347}
   m_Father: {fileID: 2807161509205804581}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4943181831211814852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4654017793671512658}
+  - component: {fileID: 8512028447149645910}
+  m_Layer: 0
+  m_Name: BowBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4654017793671512658
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4943181831211814852}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.032, y: 0.159, z: -0.214}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5536417703713828990}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8512028447149645910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4943181831211814852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1628515665
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours: []
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &5279860748939273469
 GameObject:
   m_ObjectHideFlags: 0

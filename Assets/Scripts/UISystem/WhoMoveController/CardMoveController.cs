@@ -95,7 +95,7 @@ namespace UISystem.WhoSpawnController
                 {
                     var transform = selectedCards[VARIABLE].Card.transform;
                     transform.DOMoveY(transform.position.y, 0.5f).SetEase(Ease.OutQuad);
-                    PlayerSignals.Instance.onSpawnEnum?.Invoke(cardType,selectedCards[cardType].Lwl);
+                    // PlayerSignals.Instance.onMoveEnum?.Invoke(cardType);
                 }
             }
             

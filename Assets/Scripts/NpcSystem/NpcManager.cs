@@ -10,6 +10,7 @@ using Extentions.GameSystem;
 using Fusion;
 using PlayerSystem;
 using PlayerSystem.Controller;
+using PlayerSystem.Data.UnityObject;
 using Signals;
 using SpawnSystem.Animation;
 using SpawnSystem.Data.Enum;
@@ -42,6 +43,7 @@ namespace BotSystem
         [SerializeField] private NPCEnum _me;
         [SerializeField] private List<NetworkObject> Weapon;
         [SerializeField] private NpcLevelObject npcSpawnObject;
+        [SerializeField] private SerializedDictionary<int, int> multi;
         
         #endregion
 
@@ -178,7 +180,7 @@ namespace BotSystem
             }
             
             if (lwl == 0) return;
-            float multiplier = lwl / 10f;
+            float multiplier = multi[lwl] / 100f;
             healt += (int)(healt * multiplier);
             damage += (int)(damage * multiplier);
         }

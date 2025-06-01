@@ -40,7 +40,7 @@ namespace PlayerSystem
         
         private GameObject cameraInstance;
         
-        private SerializableDictionary<int, TowerLwlData> _levelList;
+        [SerializeField] private SerializableDictionary<int, TowerLwlData> _levelList;
         private int lwl;
         private List<MeshRenderer> _meshRenderers;
 
@@ -115,7 +115,6 @@ namespace PlayerSystem
             if(!HasInputAuthority) return;
             if (cardType == CardType.Castle)
             {
-                lwl++;
                 RPC_TowerObject(lwl);
             }
         }

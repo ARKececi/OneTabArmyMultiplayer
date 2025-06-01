@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fusion;
 using Fusion.Sockets;
 using InputSystem;
-using PanelSystem;
 using PanelSystem.Enums;
-using PhotonSystem.Controller;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;

@@ -95,7 +95,8 @@ Transform:
   m_LocalPosition: {x: -0.045005344, y: 0.022305183, z: 0.0038070118}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4713112525582798910}
   m_Father: {fileID: 5369927188089093351}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5594332000445794947
@@ -113,7 +114,8 @@ MonoBehaviour:
   SortKey: 1136389069
   ObjectInterest: 1
   Flags: 262145
-  NestedObjects: []
+  NestedObjects:
+  - {fileID: 3006764107583264628}
   NetworkedBehaviours: []
   ForceRemoteRenderTimeframe: 0
 --- !u!1 &1187805831180569402
@@ -410,6 +412,56 @@ Transform:
   - {fileID: 5806587355383311555}
   m_Father: {fileID: 4817603249300674650}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2937560745459473973
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4713112525582798910}
+  - component: {fileID: 3006764107583264628}
+  m_Layer: 0
+  m_Name: ShieldPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4713112525582798910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2937560745459473973}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.036857568, y: 0.5419439, z: -0.7647293, w: 0.34659398}
+  m_LocalPosition: {x: 0.123, y: -0.035, z: 0.034}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5884311132942272754}
+  m_LocalEulerAnglesHint: {x: 53.449, y: 46.508, z: -106.821}
+--- !u!114 &3006764107583264628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2937560745459473973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2175142781
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours: []
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &3246288558431008752
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,7 +926,9 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects:
   - {fileID: 5594332000445794947}
+  - {fileID: 3006764107583264628}
   - {fileID: 7065110126082165324}
+  - {fileID: 2527453531996268081}
   NetworkedBehaviours:
   - {fileID: 5323246332956672966}
   - {fileID: 7811661094203869711}
@@ -911,6 +965,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyList: []
+  TowerController: {fileID: 0}
   _PlayerColor: {r: 0, g: 0, b: 0, a: 0}
   _Player: {fileID: 0}
   _Position: {x: 0, y: 0, z: 0}
@@ -924,21 +979,39 @@ MonoBehaviour:
       - Key: 1
         Value:
           SpawnNpc:
-          - BodySpawnPoint: {fileID: 7065110126082165324}
+          - BodySpawnPoint: {fileID: 2527453531996268081}
             SpawnObject: {fileID: 8657283444792429194, guid: 962734c966affd644a58c92c84643eba, type: 3}
       - Key: 2
         Value:
           SpawnNpc:
-          - BodySpawnPoint: {fileID: 7065110126082165324}
+          - BodySpawnPoint: {fileID: 2527453531996268081}
             SpawnObject: {fileID: 8657283444792429194, guid: 269c4425845d3a945b9f0e17b4a40865, type: 3}
-          - BodySpawnPoint: {fileID: 5594332000445794947}
+          - BodySpawnPoint: {fileID: 3006764107583264628}
             SpawnObject: {fileID: 8248074801594733872, guid: 28695f060cd21e34c9d43ed8918607d5, type: 3}
+      - Key: 3
+        Value:
+          SpawnNpc:
+          - BodySpawnPoint: {fileID: 2527453531996268081}
+            SpawnObject: {fileID: 4354340556033101664, guid: 098fa2411d259f4419e8156e62b0d30b, type: 3}
+          - BodySpawnPoint: {fileID: 3006764107583264628}
+            SpawnObject: {fileID: 8248074801594733872, guid: 28695f060cd21e34c9d43ed8918607d5, type: 3}
+      - Key: 4
+        Value:
+          SpawnNpc:
+          - BodySpawnPoint: {fileID: 2527453531996268081}
+            SpawnObject: {fileID: -1285059690724169921, guid: 081fe78f3651aca489302012fd51b680, type: 3}
+          - BodySpawnPoint: {fileID: 3006764107583264628}
+            SpawnObject: {fileID: 8248074801594733872, guid: 28695f060cd21e34c9d43ed8918607d5, type: 3}
+  multi:
+    m_Keys: 0100000002000000030000000400000005000000
+    m_Values: 0a00000014000000190000001e00000032000000
   Hit: {x: 0, y: 0, z: 0}
   _healt: 0
   _attackTime: 0
   _fight: 0
   _wait: 0
   _lwl: 0
+  _start: 0
 --- !u!195 &7060642804161847734
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1494,6 +1567,56 @@ Transform:
   - {fileID: 6242706687440979835}
   m_Father: {fileID: 5557469115977456077}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8896252680765860378
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1518809187839035854}
+  - component: {fileID: 2527453531996268081}
+  m_Layer: 0
+  m_Name: SwordPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1518809187839035854
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8896252680765860378}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.925503, y: -0.3398251, z: 0.15456252, w: -0.06382472}
+  m_LocalPosition: {x: -0.03, y: 0.049, z: 0.038}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8133645437061436781}
+  m_LocalEulerAnglesHint: {x: -0.75, y: -199.239, z: -139.549}
+--- !u!114 &2527453531996268081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8896252680765860378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1079094628
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours: []
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &8931962896997323957
 GameObject:
   m_ObjectHideFlags: 0
@@ -1555,7 +1678,8 @@ Transform:
   m_LocalPosition: {x: 0.062258795, y: -0.04216341, z: -0.005982945}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1518809187839035854}
   m_Father: {fileID: 7090630016118558731}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7065110126082165324
@@ -1573,7 +1697,8 @@ MonoBehaviour:
   SortKey: 3275781049
   ObjectInterest: 1
   Flags: 262145
-  NestedObjects: []
+  NestedObjects:
+  - {fileID: 2527453531996268081}
   NetworkedBehaviours: []
   ForceRemoteRenderTimeframe: 0
 --- !u!1 &9157325741125729553

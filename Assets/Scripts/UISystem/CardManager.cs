@@ -64,6 +64,7 @@ public class CardManager : MonoBehaviour
             cardLevels.Add(card,0);
         }
         OnGetData();
+        cardLevels[CardType.Castle]++;
     }
 
     private void OnGetData()
@@ -159,7 +160,6 @@ public class CardManager : MonoBehaviour
             GameObject card = cardDictionary[selectedType].List[index]; // Seviye sınırını aşmaz
             selectedCards.Add(card);
         }
-
         return selectedCards;
     }
 
@@ -171,7 +171,9 @@ public class CardManager : MonoBehaviour
         await Task.Delay(100);
         cardLevels[selectedType]++; // Kartın seviyesini artır
         cardPanel.SetActive(false); // Kart seçim ekranını kapat
-        UISignals.Instance.onSpawnCard?.Invoke(selectedType,cardLevels[selectedType]); // kontrol 000.1111
+        Debug.Log(selectedType);
+        if (selectedType == CardType.Castle) PlayerSignals.Instance.onSpawnEnum?.Invoke(selectedType,cardLevels[selectedType]);
+        else UISignals.Instance.onSpawnCard?.Invoke(selectedType,cardLevels[selectedType]); // kontrol 000.1111
         FadeFromLightBlack();
         FadeFromDarkBlack();
         isCardSelectionActive = true;
